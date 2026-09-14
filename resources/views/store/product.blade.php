@@ -4,7 +4,11 @@
 <section class="section" style="padding-top:42px">
     <div class="card" style="max-width:850px;margin:auto">
         <div class="product-img" style="height:260px;margin-bottom:22px">
-            @if($product->image)<img src="{{ $product->image }}" alt="{{ $product->name }}">@else>محصول@endif
+            @if($product->image)
+                <img src="{{ $product->image }}" alt="{{ $product->name }}">
+            @else
+                محصول
+            @endif
         </div>
         <div class="muted">{{ $product->category?->name }}</div>
         <h1>{{ $product->name }}</h1>
