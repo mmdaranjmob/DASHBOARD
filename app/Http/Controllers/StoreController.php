@@ -46,6 +46,12 @@ class StoreController extends Controller
         }
 
         $products = $productQuery->limit(30)->get();
+        $bannerUrl = StoreSetting::get('banner_url', '');
+        $bannerLink = StoreSetting::get('banner_link', '');
+        $bannerSlides = json_decode((string) StoreSetting::get('banner_slides', ''), true);
+        if (!is_array($bannerSlides) || $bannerSlides === []) {
+            $bannerSlides = $bannerUrl ? [['image' => $bannerUrl, 'link' => $bannerLink]] : [];
+        }
 
         return view('store.home', [
             'categories' => $categories,
@@ -55,8 +61,9 @@ class StoreController extends Controller
             'products' => $products,
             'siteName' => StoreSetting::get('site_name', 'NumberLand'),
             'logoUrl' => StoreSetting::get('logo_url', ''),
-            'bannerUrl' => StoreSetting::get('banner_url', ''),
-            'bannerLink' => StoreSetting::get('banner_link', ''),
+            'bannerUrl' => $bannerUrl,
+            'bannerLink' => $bannerLink,
+            'bannerSlides' => collect($bannerSlides)->filter(fn ($slide) => !empty($slide['image']))->values(),
             'supportUrl' => StoreSetting::get('support_url', ''),
             'supportLabel' => StoreSetting::get('support_label', 'پشتیبانی'),
         ]);
