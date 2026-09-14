@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->roles()->whereIn('code', $codes)->exists();
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin', 'super_admin');
+    }
+
     protected function casts(): array
     {
         return [
