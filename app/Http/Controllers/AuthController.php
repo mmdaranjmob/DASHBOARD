@@ -13,44 +13,56 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    public function showLogin(): View
+    public function showAuth(): View
     {
-        return view('auth.login');
-    }
-
-    public function login(Request $request): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'mobile' => ['required', 'string', 'max:20'],
-            'password' => ['required', 'string'],
+        return view('auth.index', [
+            'step' => 'identify',
+            'mobile' => old('mobile'),
+            'nationalId' => old('national_id'),
         ]);
-
-        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
-            return back()->withErrors(['mobile' => 'شماره موبایل یا رمز عبور صحیح نیست.'])->onlyInput('mobile');
-        }
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('home'));
     }
 
-    public function showRegister(): View
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request): RedirectResponse
+    public function identify(Request $request): View|RedirectResponse
     {
         $data = $request->validate([
-            'name' => ['nullable', 'string', 'max:255'],
+            'mobile' => ['required', 'string', 'max:20'],
+            'national_id' => ['required', 'string', 'size:10', 'regex:/^[0-9۰-۹]{10}$/'],
+        ]);
+
+        $user = User::where('mobile', $data['mobile'])
+            ->where('national_id', $data['national_id'])
+            ->first();
+
+        if ($user) {
+            if ($user->status !== 'active') {
+                return back()->withErrors(['mobile' => 'این حساب در حال حاضر فعال نیست.']);
+            }
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            return redirect()->route('account.dashboard');
+        }
+
+        return view('auth.index', [
+            'step' => 'details',
+            'mobile' => $data['mobile'],
+            'nationalId' => $data['national_id'],
+        ])->with('info', 'حسابی با این مشخصات پیدا نشد. برای ساخت حساب، اطلاعات زیر را تکمیل کنید.');
+    }
+
+    public function completeRegistration(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
             'mobile' => ['required', 'string', 'max:20', 'unique:users,mobile'],
             'national_id' => ['required', 'string', 'size:10', 'regex:/^[0-9۰-۹]{10}$/', 'unique:users,national_id'],
+            'name' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
         $user = DB::transaction(function () use ($data) {
             $user = User::create([
-                'name' => $data['name'] ?? null,
+                'name' => $data['name'],
                 'mobile' => $data['mobile'],
                 'national_id' => $data['national_id'],
                 'password' => Hash::make($data['password']),
@@ -70,7 +82,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('home')->with('success', 'حساب شما با موفقیت ساخته شد.');
+        return redirect()->route('account.dashboard')->with('success', 'حساب شما با موفقیت ساخته شد.');
     }
 
     public function logout(Request $request): RedirectResponse
