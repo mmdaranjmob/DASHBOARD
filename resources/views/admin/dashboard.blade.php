@@ -1,6 +1,40 @@
 @extends('layouts.store')
 @section('content')
 <style>
+/* Sidebar is RTL, while each item keeps its icon on the left and label on the right. */
+.admin-sidebar .admin-side-section:first-of-type{
+    display:flex;
+    flex-direction:column;
+}
+.admin-sidebar .admin-side-link{
+    direction:ltr;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:10px;
+    text-align:left !important;
+}
+.admin-sidebar .admin-side-link span:last-child{
+    direction:rtl;
+    text-align:right;
+    flex:1;
+}
+.admin-sidebar .admin-side-icon{
+    order:1;
+    margin:0;
+    flex:0 0 auto;
+}
+.admin-sidebar .admin-side-link span:last-child{order:2}
+
+/* Reverse only the seven main menu entries; the section caption stays at the top. */
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(1){order:7}
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(2){order:6}
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(3){order:5}
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(4){order:4}
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(5){order:3}
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(6){order:2}
+.admin-sidebar .admin-side-section:first-of-type .admin-side-link:nth-of-type(7){order:1}
+
 .admin-dashboard{direction:rtl;max-width:1250px;margin:0 auto}
 .admin-topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}
 .admin-title-wrap h1{margin:0;color:#263d50;font-size:27px;font-weight:900;letter-spacing:-.3px}.admin-title-wrap p{margin:8px 0 0;color:#8b99a5;font-size:11px}
