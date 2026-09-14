@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/categories', [AdminController::class, 'categoryStore'])->name('categories.store');
         Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
         Route::put('/orders/{order}', [AdminController::class, 'orderUpdate'])->name('orders.update');
+        Route::get('/tickets', [AdminController::class, 'tickets'])->name('tickets');
+        Route::put('/tickets/{ticket}', [AdminController::class, 'ticketUpdate'])->name('tickets.update');
     });
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
