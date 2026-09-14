@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,9 +33,14 @@ class User extends Authenticatable
         return $this->hasOne(EmployeeProfile::class);
     }
 
-    public function hasRole(string $code): bool
+    public function orders(): HasMany
     {
-        return $this->roles()->where('code', $code)->exists();
+        return $this->hasMany(Order::class);
+    }
+
+    public function hasRole(string ...$codes): bool
+    {
+        return $this->roles()->whereIn('code', $codes)->exists();
     }
 
     protected function casts(): array
