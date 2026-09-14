@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ProductField;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AdminProductFieldController extends Controller
 {
@@ -19,7 +20,10 @@ class AdminProductFieldController extends Controller
         $this->authorizeAdmin();
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'key' => ['required', 'string', 'max:100', 'regex:/^[a-zA-Z0-9_]+$/', 'unique:product_fields,key,'.$product->id.',product_id'],
+            'key' => [
+                'required', 'string', 'max:100', 'regex:/^[a-zA-Z0-9_]+$/',
+                Rule::unique('product_fields', 'key')->where(fn ($query) => $query->where('product_id', $product->id)),
+            ],
             'type' => ['required', 'in:text,number,textarea,select'],
             'description' => ['nullable', 'string', 'max:1000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
@@ -38,7 +42,10 @@ class AdminProductFieldController extends Controller
                 $line = trim($line);
                 if ($line === '') continue;
                 $parts = array_map('trim', explode('|', $line, 2));
-                $field->options()->create(['label' => $parts[0], 'value' => $parts[1] ?? $parts[0], 'sort_order' => $i, 'is_active' => true]);
+                $field->options()->create([
+                    'label' => $parts[0], 'value' => $parts[1] ?? $parts[0],
+                    'sort_order' => $i, 'is_active' => true,
+                ]);
             }
         }
 
