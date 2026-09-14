@@ -14,10 +14,13 @@ Route::get('/', [StoreController::class, 'home'])->name('home');
 Route::get('/products/{product}', [StoreController::class, 'product'])->name('product.show');
 
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/auth', [AuthController::class, 'showAuth'])->name('auth');
+    Route::post('/auth', [AuthController::class, 'identify'])->name('auth.identify');
+    Route::post('/auth/complete', [AuthController::class, 'completeRegistration'])->name('auth.complete');
+
+    // Keep old URLs working and send everyone to the unified screen.
+    Route::redirect('/login', '/auth')->name('login');
+    Route::redirect('/register', '/auth')->name('register');
 });
 
 Route::middleware('auth')->group(function () {
