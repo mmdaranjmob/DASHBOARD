@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminProductFieldController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PurchaseController;
@@ -13,12 +14,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [StoreController::class, 'home'])->name('home');
 Route::get('/products/{product}', [StoreController::class, 'product'])->name('product.show');
 
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::put('/cart/{product}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/{product}', [CartController::class, 'remove'])->name('cart.remove');
+
 Route::middleware('guest')->group(function () {
     Route::get('/auth', [AuthController::class, 'showAuth'])->name('auth');
     Route::post('/auth', [AuthController::class, 'identify'])->name('auth.identify');
     Route::post('/auth/complete', [AuthController::class, 'completeRegistration'])->name('auth.complete');
 
-    // Keep old URLs working and send everyone to the unified screen.
     Route::redirect('/login', '/auth')->name('login');
     Route::redirect('/register', '/auth')->name('register');
 });
