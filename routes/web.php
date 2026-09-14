@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+        Route::put('/settings', [AdminController::class, 'settingsUpdate'])->name('settings.update');
         Route::get('/users', [AdminController::class, 'users'])->name('users');
         Route::post('/users/{user}/credit', [AdminController::class, 'manualCredit'])->name('users.credit');
         Route::get('/products', [AdminController::class, 'products'])->name('products');
@@ -56,9 +58,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/products/{product}', [AdminController::class, 'productUpdate'])->name('products.update');
         Route::post('/products/{product}/toggle', [AdminController::class, 'productToggle'])->name('products.toggle');
         Route::post('/products/{product}/fields', [AdminProductFieldController::class, 'store'])->name('products.fields.store');
-        Route::delete('/product-fields/{field}', [AdminProductFieldController::class, 'destroy'])->name('products.fields.destroy');
+        Route::delete('/product-fields/{field}', [AdminProductFieldController::class, 'destroy'])->name('product-fields.destroy');
         Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
         Route::post('/categories', [AdminController::class, 'categoryStore'])->name('categories.store');
+        Route::get('/categories/{category}/edit', [AdminController::class, 'categoryEdit'])->name('categories.edit');
+        Route::put('/categories/{category}', [AdminController::class, 'categoryUpdate'])->name('categories.update');
         Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
         Route::put('/orders/{order}', [AdminController::class, 'orderUpdate'])->name('orders.update');
         Route::get('/tickets', [AdminController::class, 'tickets'])->name('tickets');
