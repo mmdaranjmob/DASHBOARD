@@ -1,39 +1,29 @@
 @extends('layouts.store')
 
 @section('content')
-<section class="section" style="padding-top:42px">
-    <div class="card" style="background:linear-gradient(135deg,#0b1020,#211b55);color:#fff;padding:32px;margin-bottom:20px;overflow:hidden;position:relative">
-        <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(109,93,252,.35),transparent 70%);left:-70px;top:-110px"></div>
-        <div class="muted" style="color:#aeb6c8">پنل شخصی</div>
-        <h1 style="margin:7px 0 8px;font-size:34px">سلام {{ $user->name ?: 'دوست عزیز' }} 👋</h1>
-        <p style="color:#cbd5e1;margin:0;line-height:1.9">از اینجا خریدها، کیف پول، سفارش‌ها و پشتیبانی خودت را مدیریت کن.</p>
-    </div>
-
-    <div class="stats-grid" style="margin-bottom:20px">
-        <div class="card stat"><div class="muted">موجودی کیف پول</div><div class="value">{{ number_format($user->wallet?->balance ?? 0) }}</div><div class="muted">ریال</div></div>
-        <div class="card stat"><div class="muted">سفارش‌ها</div><div class="value">{{ $user->orders()->count() }}</div><div class="muted">سفارش ثبت‌شده</div></div>
-        <div class="card stat"><div class="muted">شماره موبایل</div><div class="value" style="font-size:21px;direction:ltr;text-align:right">{{ $user->mobile }}</div><div class="muted">حساب فعال</div></div>
-    </div>
-
-    <div class="section-head"><div><h2>دسترسی سریع</h2><p>همه‌چیز دم دستت.</p></div></div>
-    <div class="grid" style="margin-bottom:30px">
-        <a class="card" href="{{ route('home') }}"><div style="font-size:25px">🛍️</div><strong style="display:block;margin-top:12px">فروشگاه</strong><div class="muted" style="margin-top:6px">خرید خدمات جدید</div></a>
-        <a class="card" href="{{ route('cart.index') }}"><div style="font-size:25px">🛒</div><strong style="display:block;margin-top:12px">سبد خرید</strong><div class="muted" style="margin-top:6px">مشاهده اقلام انتخابی</div></a>
-        <a class="card" href="{{ route('account.orders') }}"><div style="font-size:25px">📦</div><strong style="display:block;margin-top:12px">سفارش‌ها</strong><div class="muted" style="margin-top:6px">پیگیری سفارش‌ها</div></a>
-        <a class="card" href="{{ route('account.transactions') }}"><div style="font-size:25px">💳</div><strong style="display:block;margin-top:12px">تراکنش‌ها</strong><div class="muted" style="margin-top:6px">سوابق مالی کیف پول</div></a>
-        <a class="card" href="{{ route('account.tickets') }}"><div style="font-size:25px">🎧</div><strong style="display:block;margin-top:12px">پشتیبانی</strong><div class="muted" style="margin-top:6px">ثبت و پیگیری تیکت</div></a>
-        <a class="card" href="{{ route('account.profile') }}"><div style="font-size:25px">✏️</div><strong style="display:block;margin-top:12px">ویرایش پروفایل</strong><div class="muted" style="margin-top:6px">اطلاعات حساب کاربری</div></a>
-    </div>
-
-    <div class="section-head"><div><h2>آخرین سفارش‌ها</h2><p>خلاصه فعالیت اخیر.</p></div><a class="btn btn-soft" href="{{ route('account.orders') }}">همه سفارش‌ها ←</a></div>
-    @if($orders->isEmpty())
-        <div class="empty">هنوز سفارشی ثبت نکرده‌ای. <a href="{{ route('home') }}" style="font-weight:800;color:#6355e8">شروع خرید →</a></div>
-    @else
-        <div class="card" style="padding:0;overflow:auto">
-            <table style="width:100%;border-collapse:collapse;min-width:650px"><thead><tr style="background:#fafaff"><th style="padding:15px;text-align:right">شماره</th><th style="padding:15px;text-align:right">مبلغ</th><th style="padding:15px;text-align:right">وضعیت</th><th style="padding:15px;text-align:right">تاریخ</th><th></th></tr></thead><tbody>
-            @foreach($orders as $order)<tr style="border-top:1px solid #edf0f5"><td style="padding:15px;font-weight:800">{{ $order->order_number }}</td><td style="padding:15px">{{ number_format($order->total_amount) }} ریال</td><td style="padding:15px">{{ match($order->status){'pending'=>'در انتظار','paid'=>'پرداخت‌شده','processing'=>'در حال پردازش','completed'=>'تکمیل‌شده','cancelled'=>'لغوشده','refunded'=>'مرجوع‌شده',default=>$order->status} }}</td><td style="padding:15px">{{ $order->created_at?->format('Y/m/d H:i') }}</td><td style="padding:15px"><a class="btn btn-soft" href="{{ route('account.orders.show',$order) }}">جزئیات</a></td></tr>@endforeach
-            </tbody></table>
-        </div>
-    @endif
-</section>
+<style>
+.user-dashboard{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:18px;direction:ltr;align-items:start}.user-main{direction:rtl;min-width:0}.user-sidebar{direction:rtl;background:#fff;border:1px solid #e6edf2;border-radius:18px;padding:14px;position:sticky;top:84px;box-shadow:0 5px 20px rgba(37,64,92,.05)}.user-side-head{display:flex;align-items:center;gap:10px;padding:7px 6px 14px;border-bottom:1px solid #eef2f5;margin-bottom:10px}.user-side-avatar{width:42px;height:42px;border-radius:13px;background:#eef8fc;color:#0aa7de;display:grid;place-items:center;font-weight:900}.user-side-head strong{display:block;color:#334b5f;font-size:12px}.user-side-head small{display:block;margin-top:4px;color:#93a0ab;font-size:9px}.user-side-title{padding:8px 9px 5px;color:#a0abb4;font-size:9px;font-weight:900}.user-side-link{display:flex;align-items:center;gap:10px;min-height:41px;padding:0 10px;margin:3px 0;border-radius:11px;color:#6c7d8b;font-size:11px}.user-side-link:hover,.user-side-link.active{background:#eefaff;color:#079fd3}.user-side-link.active{font-weight:900}.user-side-icon{width:22px;text-align:center;font-size:14px}.user-side-balance{margin-top:12px;padding:12px;border-radius:13px;background:#f4fbf8;border:1px solid #dff2e9}.user-side-balance span{display:block;color:#7c9386;font-size:9px}.user-side-balance strong{display:block;color:#24835f;font-size:14px;margin-top:5px}.user-welcome{background:linear-gradient(135deg,#0b1020,#211b55);color:#fff;padding:30px;border-radius:18px;margin-bottom:18px}.user-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}.user-stat{padding:18px}.user-stat .value{margin-top:8px;font-size:24px;font-weight:900;color:#30485c}.user-quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}.user-quick{padding:17px}.user-quick strong{display:block;margin-top:10px;font-size:12px}.user-quick span{display:block;margin-top:5px;color:#96a3ad;font-size:10px}@media(max-width:900px){.user-dashboard{grid-template-columns:1fr}.user-sidebar{position:static}.user-stats,.user-quick-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.user-stats,.user-quick-grid{grid-template-columns:1fr}}
+</style>
+<section class="section" style="padding-top:24px"><div class="user-dashboard">
+<aside class="user-sidebar">
+<div class="user-side-head"><div class="user-side-avatar">{{ mb_substr($user->name ?: 'ک',0,1) }}</div><div><strong>{{ $user->name ?: 'کاربر' }}</strong><small>{{ $user->mobile }}</small></div></div>
+<div class="user-side-title">حساب کاربری</div>
+<a class="user-side-link active" href="{{ route('account.dashboard') }}"><span class="user-side-icon">⌂</span>داشبورد</a>
+<a class="user-side-link" href="{{ route('account.orders') }}"><span class="user-side-icon">▣</span>سفارش‌های من</a>
+<a class="user-side-link" href="{{ route('account.transactions') }}"><span class="user-side-icon">▤</span>تراکنش‌ها</a>
+<a class="user-side-link" href="{{ route('account.tickets') }}"><span class="user-side-icon">◈</span>پشتیبانی</a>
+<a class="user-side-link" href="{{ route('account.profile') }}"><span class="user-side-icon">✎</span>پروفایل</a>
+<div class="user-side-title">خرید</div>
+<a class="user-side-link" href="{{ route('home') }}"><span class="user-side-icon">🛍</span>فروشگاه</a>
+<a class="user-side-link" href="{{ route('cart.index') }}"><span class="user-side-icon">🛒</span>سبد خرید</a>
+<div class="user-side-balance"><span>موجودی کیف پول</span><strong>{{ number_format($user->wallet?->balance ?? 0) }} ریال</strong></div>
+</aside>
+<div class="user-main">
+<div class="user-welcome"><div class="muted" style="color:#aeb6c8">پنل شخصی</div><h1 style="margin:7px 0 8px;font-size:32px">سلام {{ $user->name ?: 'دوست عزیز' }} 👋</h1><p style="color:#cbd5e1;margin:0;line-height:1.9">خریدها، کیف پول، سفارش‌ها و پشتیبانی خودت را از اینجا مدیریت کن.</p></div>
+<div class="user-stats"><div class="card user-stat"><div class="muted">موجودی کیف پول</div><div class="value">{{ number_format($user->wallet?->balance ?? 0) }}</div><div class="muted">ریال</div></div><div class="card user-stat"><div class="muted">سفارش‌ها</div><div class="value">{{ $user->orders()->count() }}</div><div class="muted">سفارش ثبت‌شده</div></div><div class="card user-stat"><div class="muted">شماره موبایل</div><div class="value" style="font-size:19px;direction:ltr;text-align:right">{{ $user->mobile }}</div><div class="muted">حساب فعال</div></div></div>
+<div class="section-head"><div><h2>دسترسی سریع</h2><p>همه‌چیز دم دستت.</p></div></div>
+<div class="user-quick-grid"><a class="card user-quick" href="{{ route('home') }}"><div style="font-size:24px">🛍️</div><strong>فروشگاه</strong><span>خرید خدمات جدید</span></a><a class="card user-quick" href="{{ route('cart.index') }}"><div style="font-size:24px">🛒</div><strong>سبد خرید</strong><span>مشاهده اقلام انتخابی</span></a><a class="card user-quick" href="{{ route('account.orders') }}"><div style="font-size:24px">📦</div><strong>سفارش‌ها</strong><span>پیگیری سفارش‌ها</span></a><a class="card user-quick" href="{{ route('account.transactions') }}"><div style="font-size:24px">💳</div><strong>تراکنش‌ها</strong><span>سوابق مالی کیف پول</span></a><a class="card user-quick" href="{{ route('account.tickets') }}"><div style="font-size:24px">🎧</div><strong>پشتیبانی</strong><span>ثبت و پیگیری تیکت</span></a><a class="card user-quick" href="{{ route('account.profile') }}"><div style="font-size:24px">✏️</div><strong>ویرایش پروفایل</strong><span>اطلاعات حساب کاربری</span></a></div>
+<div class="section-head"><div><h2>آخرین سفارش‌ها</h2><p>خلاصه فعالیت اخیر.</p></div><a class="btn btn-soft" href="{{ route('account.orders') }}">همه سفارش‌ها ←</a></div>
+@if($orders->isEmpty())<div class="empty">هنوز سفارشی ثبت نکرده‌ای. <a href="{{ route('home') }}" style="font-weight:800;color:#6355e8">شروع خرید →</a></div>@else<div class="card" style="padding:0;overflow:auto"><table style="width:100%;border-collapse:collapse;min-width:650px"><thead><tr style="background:#fafaff"><th style="padding:15px;text-align:right">شماره</th><th style="padding:15px;text-align:right">مبلغ</th><th style="padding:15px;text-align:right">وضعیت</th><th style="padding:15px;text-align:right">تاریخ</th><th></th></tr></thead><tbody>@foreach($orders as $order)<tr style="border-top:1px solid #edf0f5"><td style="padding:15px;font-weight:800">{{ $order->order_number }}</td><td style="padding:15px">{{ number_format($order->total_amount) }} ریال</td><td style="padding:15px">{{ match($order->status){'pending'=>'در انتظار','paid'=>'پرداخت‌شده','processing'=>'در حال پردازش','completed'=>'تکمیل‌شده','cancelled'=>'لغوشده','refunded'=>'مرجوع‌شده',default=>$order->status} }}</td><td style="padding:15px">{{ $order->created_at?->format('Y/m/d H:i') }}</td><td style="padding:15px"><a class="btn btn-soft" href="{{ route('account.orders.show',$order) }}">جزئیات</a></td></tr>@endforeach</tbody></table></div>@endif
+</div></div></section>
 @endsection
