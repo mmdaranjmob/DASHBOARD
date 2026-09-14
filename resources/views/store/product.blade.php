@@ -22,7 +22,7 @@
         @auth
             <form method="POST" action="{{ route('product.purchase', $product) }}" class="card" style="background:#f8fafc;border:1px solid #e7eaf0;margin-top:18px">
                 @csrf
-                <input type="hidden" name="idempotency_key" value="{{ (string) Str::uuid() }}">
+                <input type="hidden" name="idempotency_key" value="{{ (string) \Illuminate\Support\Str::uuid() }}">
 
                 @if($product->fields->isNotEmpty())
                     <h3 style="margin-top:0">اطلاعات موردنیاز</h3>
