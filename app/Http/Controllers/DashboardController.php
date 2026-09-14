@@ -33,13 +33,17 @@ class DashboardController extends Controller
 
     public function updateProfile(Request $request): RedirectResponse
     {
+        $user = $request->user();
+
         $data = $request->validate([
             'name' => ['nullable', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255', 'unique:users,email,' . $request->user()->id],
+            'mobile' => ['required', 'string', 'max:20', 'unique:users,mobile,' . $user->id],
+            'national_id' => ['required', 'string', 'size:10', 'regex:/^[0-9۰-۹]{10}$/', 'unique:users,national_id,' . $user->id],
+            'email' => ['nullable', 'email', 'max:255', 'unique:users,email,' . $user->id],
         ]);
 
-        $request->user()->update($data);
+        $user->update($data);
 
-        return back()->with('success', 'پروفایل با موفقیت ذخیره شد.');
+        return back()->with('success', 'اطلاعات پروفایل با موفقیت ذخیره شد.');
     }
 }
