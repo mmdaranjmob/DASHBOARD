@@ -16,6 +16,11 @@
             <a href="{{ route('home') }}">فروشگاه</a>
             @auth
                 <a href="{{ route('account.dashboard') }}">حساب من</a>
+                <a href="{{ route('account.orders') }}">سفارش‌ها</a>
+                <a href="{{ route('account.tickets') }}">پشتیبانی</a>
+                @if(auth()->user()->isAdmin())
+                    <a href="{{ route('admin.dashboard') }}">مدیریت</a>
+                @endif
                 <span style="color:#9ca3af">کیف پول: {{ number_format(auth()->user()->wallet?->balance ?? 0) }} ریال</span>
                 <form method="POST" action="{{ route('logout') }}" style="display:inline">@csrf<button type="submit">خروج</button></form>
             @else
