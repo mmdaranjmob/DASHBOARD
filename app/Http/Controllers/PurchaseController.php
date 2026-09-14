@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Str;
+use Illuminate\Support\Str;
 
 class PurchaseController extends Controller
 {
@@ -17,30 +17,34 @@ class PurchaseController extends Controller
 
         $product->load('fields.options');
 
-        $rules = ['quantity' => ['nullable', 'integer', 'min:1', 'max:20'], 'idempotency_key' => ['required', 'uuid']];
+        $rules = [
+            'quantity' => ['nullable', 'integer', 'min:1', 'max:20'],
+            'idempotency_key' => ['required', 'uuid'],
+        ];
+
         foreach ($product->fields as $field) {
-            $fieldRules = ['string', 'max:1000'];
-            if ($field->is_required) {
-                array_unshift($fieldRules, 'required');
-            } else {
-                array_unshift($fieldRules, 'nullable');
-            }
+            $fieldRules = [$field->is_required ? 'required' : 'nullable', 'string', 'max:1000'];
             if ($field->type === 'select') {
-                $fieldRules[] = 'in:' . $field->options->pluck('value')->map(fn ($value) => str_replace(',', '\\,', $value))->implode(',');
+                $allowed = $field->options->pluck('value')->all();
+                $fieldRules[] = function ($attribute, $value, $fail) use ($allowed) {
+                    if (!in_array($value, $allowed, true)) {
+                        $fail('مقدار انتخاب‌شده معتبر نیست.');
+                    }
+                };
             }
             $rules['fields.' . $field->key] = $fieldRules;
         }
 
         $data = $request->validate($rules);
         $quantity = (int) ($data['quantity'] ?? 1);
-        $total = $product->price * $quantity;
+        $total = (int) $product->price * $quantity;
 
         try {
             $order = DB::transaction(function () use ($request, $product, $data, $quantity, $total) {
                 $existing = Order::where('user_id', $request->user()->id)
-                    ->whereHas('items', fn ($query) => $query->where('product_id', $product->id))
                     ->where('customer_note', 'idempotency:' . $data['idempotency_key'])
                     ->first();
+
                 if ($existing) {
                     return $existing;
                 }
@@ -48,7 +52,6 @@ class PurchaseController extends Controller
                 $wallet = $request->user()->wallet()->lockForUpdate()->first();
                 if (!$wallet) {
                     $wallet = $request->user()->wallet()->create(['balance' => 0, 'currency' => 'IRR']);
-                    $wallet->refresh();
                 }
 
                 if ((int) $wallet->balance < $total) {
@@ -56,8 +59,8 @@ class PurchaseController extends Controller
                 }
 
                 if ($product->has_inventory) {
-                    $lockedProduct = Product::whereKey($product->id)->lockForUpdate()->first();
-                    if (($lockedProduct->inventory ?? 0) < $quantity) {
+                    $lockedProduct = Product::whereKey($product->id)->lockForUpdate()->firstOrFail();
+                    if ((int) $lockedProduct->inventory < $quantity) {
                         abort(422, 'موجودی محصول کافی نیست.');
                     }
                     $lockedProduct->decrement('inventory', $quantity);
@@ -92,7 +95,6 @@ class PurchaseController extends Controller
                 foreach ($product->fields as $field) {
                     $value = $data['fields'][$field->key] ?? null;
                     if ($value !== null && $value !== '') {
-                        $item->order()->getQuery();
                         DB::table('order_field_values')->insert([
                             'order_item_id' => $item->id,
                             'product_field_id' => $field->id,
