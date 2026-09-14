@@ -29,13 +29,14 @@
         .store-info{margin-top:18px;display:grid;grid-template-columns:1.25fr .9fr;gap:18px}.info-card{background:#fff;border:1px solid #e7edf2;border-radius:18px;box-shadow:0 4px 18px rgba(37,64,92,.04);padding:20px}.info-title{margin:0 0 8px;color:#30495d;font-size:15px}.info-copy{margin:0;color:#7f909e;font-size:11px;line-height:2.05}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.feature{padding:12px;border:1px solid #edf1f4;border-radius:12px;background:#fbfcfd}.feature b{display:block;font-size:11px;color:#536c7e;margin-bottom:4px}.feature span{font-size:10px;color:#99a6b1;line-height:1.7}.trust-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}.trust-item{min-height:66px;border:1px solid #edf1f4;border-radius:12px;background:#fbfcfd;display:flex;align-items:center;justify-content:center;text-align:center;color:#8a9aa7;font-size:10px;padding:10px}.floating-support{position:fixed;right:22px;bottom:20px;width:49px;height:49px;border-radius:16px;background:#fff;border:1px solid #e3eaf0;box-shadow:0 9px 25px rgba(34,61,84,.13);display:grid;place-items:center;color:var(--orange);z-index:80}.support-svg{width:24px;height:24px}
         .section{padding:22px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:#fff;border:1px solid #e7edf2;border-radius:16px;box-shadow:0 4px 16px rgba(39,68,92,.04)}.form-box{width:min(700px,100%);margin:28px auto;padding:25px;background:#fff;border:1px solid #e5ecf1;border-radius:18px;box-shadow:var(--shadow)}.form-box h1,.form-box h2{margin:0 0 7px;color:#30485d}.form-group{margin-bottom:14px}.form-group label{display:block;margin-bottom:7px;color:#50687a;font-size:12px;font-weight:800}.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid #dbe4eb;border-radius:9px;padding:11px 12px;background:#fff;color:#31495e;outline:0}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#8ed9f2;box-shadow:0 0 0 3px rgba(18,174,231,.08)}.footer{padding:28px 0 36px;text-align:center;color:#9daab5;font-size:10px}
         .admin-section{padding:24px 0}.admin-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}.admin-kicker{font-size:10px;color:#08a0d7;font-weight:900;margin-bottom:4px}.admin-head h1{margin:0;color:#2b4357;font-size:24px}.admin-head p{margin:7px 0 0;color:#8c9aa6;font-size:11px}.admin-panel{background:#fff;border:1px solid #e6edf2;border-radius:18px;box-shadow:0 5px 20px rgba(37,64,92,.05);padding:18px}.admin-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);gap:16px}.panel-title{display:flex;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid #eef2f5;margin-bottom:4px}.panel-title strong{color:#31495e;font-size:13px}.panel-title span{display:block;margin-top:4px;color:#94a1ad;font-size:10px}.admin-list{display:flex;flex-direction:column}.admin-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #f0f3f5}.admin-row:last-child{border-bottom:0}.row-main{display:flex;align-items:center;gap:11px;min-width:0}.row-main strong{display:block;color:#40586d;font-size:12px}.row-main small{display:block;margin-top:4px;color:#99a6b2;font-size:10px}.admin-avatar{width:38px;height:38px;border-radius:11px;background:#f1f8fc;color:#10a9df;display:grid;place-items:center;font-weight:900;flex:0 0 auto}.row-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}.status{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.status-on{color:#198458;background:#effaf4}.status-off{color:#a77171;background:#fff2f2}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.form-span-2{grid-column:1/-1}.form-actions{display:flex;gap:8px;margin-top:18px}.check-row{display:flex;align-items:center;gap:8px;font-size:11px;color:#607487}.check-row input{accent-color:#10abe0}.settings-preview{margin-top:10px;padding:10px;border:1px solid #e7edf2;border-radius:12px;background:#fafcfd}.settings-preview span{display:block;color:#8293a1;font-size:10px;margin-bottom:8px}.settings-preview img{display:block;width:100%;max-height:160px;object-fit:cover;border-radius:8px}.admin-nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.admin-nav a{padding:9px 12px;border:1px solid #e5ebf0;background:#fff;border-radius:9px;color:#607486;font-size:11px}.admin-nav a:hover{border-color:#cae7f1;color:#079fd5;background:#f9fdff}
-        .admin-shell{direction:ltr;display:grid;grid-template-columns:minmax(0,1fr) 258px;min-height:calc(100vh - 68px);background:var(--admin-bg);margin:0 -17px -34px}
-        .admin-content{direction:rtl;min-width:0;padding:25px 28px 42px;background:#f7f7f8}
-        .admin-sidebar{direction:rtl;background:var(--admin-side);border-left:1px solid #d8d8dc;min-height:100%;padding:16px 10px 24px;position:sticky;top:0;height:calc(100vh - 68px);overflow:auto;color:#25242a}
-        .admin-side-brand{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:0 8px 18px;border-bottom:1px solid #dadadd}.admin-side-brand-main{display:flex;align-items:center;gap:10px}.admin-side-brand-mark{width:38px;height:38px;border-radius:10px;background:#fff;border:1px solid #d9d9dd;display:grid;place-items:center;font-weight:900;color:#444}.admin-side-brand strong{display:block;font-size:14px;color:#29292e}.admin-side-brand small{display:block;font-size:8px;color:#b47e49;margin-top:3px}.admin-side-collapse{font-size:17px;color:#777;line-height:1;padding-top:2px}.admin-side-section{padding:14px 4px 4px}.admin-side-caption{padding:0 10px 7px;color:#98989d;font-size:9px;font-weight:700}.admin-side-link{display:flex;align-items:center;gap:9px;min-height:38px;padding:0 10px;margin:2px 0;border-radius:10px;color:#44444b;font-size:11px;transition:.12s}.admin-side-link:hover{background:#e4e4e7;color:#25252b}.admin-side-link.active{background:#dedee2;color:#24242a;font-weight:900;border-right:3px solid #4a4a52}.admin-side-icon{width:20px;height:20px;display:grid;place-items:center;color:#6e6e75;flex:0 0 auto}.admin-side-link.active .admin-side-icon{color:#2f3035}.admin-side-divider{height:1px;background:#dadadd;margin:9px 6px}.admin-side-user{margin:14px 4px 0;padding:10px;background:#e4e4e7;border:1px solid #d8d8dc;border-radius:12px}.admin-side-user strong{display:block;font-size:10px;color:#36363b}.admin-side-user span{display:block;margin-top:4px;font-size:9px;color:#84848a}
-        @media(max-width:1080px){.header-inner{grid-template-columns:155px 1fr auto}.main-nav{display:none}.store-main{grid-template-columns:1fr}.category-sidebar{display:grid;grid-template-columns:repeat(4,1fr)}.catalog-body{grid-template-columns:1fr}.empty-panel{min-height:350px;order:2}.store-info{grid-template-columns:1fr}.admin-layout{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.admin-shell{grid-template-columns:minmax(0,1fr) 220px}.admin-content{padding:22px 18px 38px}}
-        @media(max-width:760px){.admin-shell{grid-template-columns:1fr;margin:0 -9px -34px}.admin-sidebar{position:relative;height:auto;min-height:0;border-left:0;border-bottom:1px solid #d8d8dc;padding-bottom:12px}.admin-side-section{display:grid;grid-template-columns:repeat(2,1fr);gap:3px}.admin-side-caption{grid-column:1/-1}.admin-side-user{display:none}.admin-content{padding:18px 12px 34px}}
+        @media(max-width:1080px){.header-inner{grid-template-columns:155px 1fr auto}.main-nav{display:none}.store-main{grid-template-columns:1fr}.category-sidebar{display:grid;grid-template-columns:repeat(4,1fr)}.catalog-body{grid-template-columns:1fr}.empty-panel{min-height:350px;order:2}.store-info{grid-template-columns:1fr}.admin-layout{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
         @media(max-width:680px){.container{width:calc(100% - 18px)}.site-header,.header-inner{height:58px}.header-inner{grid-template-columns:1fr auto;gap:9px}.brand-logo{width:112px}.header-pill{height:34px;padding:0 9px}.balance-pill{display:none}.avatar-link span{display:none}.page{min-height:calc(100vh - 104px)}.store-banner img,.banner-placeholder{height:108px}.catalog-card{padding:13px}.catalog-tabs{gap:4px}.catalog-tab{font-size:11px;padding-inline:8px}.catalog-head{flex-direction:column;align-items:stretch}.catalog-heading{font-size:14px}.category-sidebar{grid-template-columns:1fr 1fr;gap:8px}.category-item{min-height:51px}.category-icon{width:35px;height:35px}.service-row{min-height:43px}.service-price{font-size:10px}.store-info{gap:12px}.feature-grid{grid-template-columns:1fr}.trust-list{grid-template-columns:1fr 1fr}.admin-head{align-items:flex-start;flex-direction:column}.admin-row{align-items:flex-start}.row-actions .status{display:none}.form-grid{grid-template-columns:1fr}.form-span-2{grid-column:auto}.grid{grid-template-columns:1fr}.floating-support{right:13px;bottom:13px;width:44px;height:44px}}
+        .admin-shell{display:grid;grid-template-columns:minmax(0,1fr) 250px;min-height:calc(100vh - 68px);direction:ltr;background:var(--admin-bg)}
+        .admin-content{direction:rtl;padding:30px 34px 50px;min-width:0}
+        .admin-sidebar{direction:rtl;background:#ededf0;border-left:1px solid #dcdde2;padding:24px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:calc(100vh - 68px);box-shadow:-4px 0 18px rgba(50,50,60,.035)}
+        .admin-side-brand{display:flex;align-items:center;justify-content:space-between;padding:0 5px 20px;border-bottom:1px solid #d9dade}.admin-side-brand-main{display:flex;align-items:center;gap:11px}.admin-side-brand-mark{width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid #dddfe4;color:#4d5661;display:grid;place-items:center;font-weight:900;font-size:15px}.admin-side-brand strong{display:block;color:#37414b;font-size:12px}.admin-side-brand small{display:block;margin-top:4px;color:#8e959d;font-size:9px}.admin-side-collapse{width:28px;height:28px;border-radius:8px;background:#e2e3e7;color:#727a84;display:grid;place-items:center;font-size:15px}.admin-side-section{padding:20px 0 6px}.admin-side-caption{padding:0 10px 9px;color:#9a9fa6;font-size:9px;font-weight:900}.admin-side-link{display:flex;align-items:center;gap:10px;min-height:40px;padding:0 11px;margin:3px 0;border-radius:10px;color:#707780;font-size:11px;transition:.14s}.admin-side-link:hover{background:#e4e5e9;color:#424a53}.admin-side-link.active{background:#fff;color:#353d45;box-shadow:0 2px 9px rgba(60,60,70,.055);font-weight:900}.admin-side-icon{width:22px;text-align:center;color:#8b9198;font-size:13px}.admin-side-link.active .admin-side-icon{color:#4b545e}.admin-side-divider{height:1px;background:#d9dade;margin:8px 0 10px}.admin-side-user{margin-top:auto;padding:14px 7px 2px;border-top:1px solid #d9dade}.admin-side-user-main{display:flex;align-items:center;gap:9px}.admin-side-user .avatar{background:#dadce0;color:#656d76;width:34px;height:34px}.admin-side-user strong{display:block;font-size:10px;color:#555d66}.admin-side-user small{display:block;margin-top:3px;font-size:8px;color:#969ca3}.admin-side-user a{color:#7a818a;font-size:9px}
+        .admin-content .admin-section{padding:0}.admin-content .admin-head{margin-bottom:22px}.admin-content .admin-head h1{font-size:25px}.admin-content .admin-panel{border-radius:14px;box-shadow:0 4px 15px rgba(45,48,55,.035)}
+        @media(max-width:900px){.admin-shell{grid-template-columns:1fr}.admin-sidebar{position:relative;height:auto;order:2;border-left:0;border-top:1px solid #dcdde2}.admin-content{order:1;padding:22px 16px 40px}}
     </style>
 </head>
 @php($isAdminArea = request()->is('admin*'))
@@ -73,7 +74,7 @@
                         <strong>{{ collect(session('cart'))->sum('quantity') }}</strong>
                     @endif
                 </a>
-                <a class="avatar-link" href="{{ route('account.profile') }}">
+                <a class="avatar-link" href="{{ route('account.dashboard') }}">
                     <span>{{ auth()->user()->name ?: 'کاربر' }}</span>
                     <span class="avatar">●</span>
                 </a>
@@ -118,17 +119,16 @@
             </form>
         </div>
         @auth
-            <div class="admin-side-user"><strong>{{ auth()->user()->name ?: 'مدیر' }}</strong><span>سطح دسترسی: {{ auth()->user()->hasRole('super_admin') ? 'Super Admin' : 'Admin' }}</span></div>
+            <div class="admin-side-user">
+                <div class="admin-side-user-main">
+                    <span class="avatar">●</span>
+                    <div><strong>{{ auth()->user()->name ?: 'مدیر' }}</strong><small>{{ auth()->user()->hasRole('super_admin') ? 'Super Admin' : 'Admin' }}</small></div>
+                </div>
+            </div>
         @endauth
     </aside>
     <main class="admin-content">
-        @if(session('success'))<div class="flash">{{ session('success') }}</div>@endif
-        @if(session('info'))<div class="flash">{{ session('info') }}</div>@endif
-        @if($errors->any())<div class="errors">{{ $errors->first() }}</div>@endif
-        @yield('content')
-    </main>
-</div>
-@else
+@endif
 <main class="page container">
     @if(session('success'))
         <div class="flash">{{ session('success') }}</div>
@@ -141,7 +141,11 @@
     @endif
     @yield('content')
 </main>
-@if($supportUrl)
+@if($isAdminArea)
+    </main>
+</div>
+@endif
+@if($supportUrl && !$isAdminArea)
     <a class="floating-support" href="{{ $supportUrl }}" aria-label="پشتیبانی">
         <svg class="support-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M4 12a8 8 0 0 1 16 0v4a3 3 0 0 1-3 3h-2v-6h5M4 13H2v2a3 3 0 0 0 3 3h1v-5"/>
@@ -150,6 +154,5 @@
     </a>
 @endif
 <footer class="footer">© {{ now()->year }} {{ $siteName }}</footer>
-@endif
 </body>
 </html>
