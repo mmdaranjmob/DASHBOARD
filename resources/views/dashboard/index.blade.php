@@ -7,7 +7,10 @@
             <div class="muted">حساب کاربری</div>
             <h1 style="margin:4px 0 0">سلام {{ $user->name ?: 'دوست عزیز' }} 👋</h1>
         </div>
-        <a class="btn btn-dark" href="{{ route('home') }}">بازگشت به فروشگاه</a>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-dark" href="{{ route('account.profile') }}">✏️ ویرایش پروفایل</a>
+            <a class="btn btn-dark" href="{{ route('home') }}">بازگشت به فروشگاه</a>
+        </div>
     </div>
 
     <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px">
