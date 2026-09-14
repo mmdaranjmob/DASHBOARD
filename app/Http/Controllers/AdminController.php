@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Ticket;
 use App\Models\User;
 use App\Models\WalletTransaction;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,7 @@ class AdminController extends Controller
             'users' => User::count(),
             'orders' => Order::count(),
             'pending_orders' => Order::whereIn('status', ['pending', 'processing'])->count(),
+            'open_tickets' => Ticket::whereIn('status', ['open', 'answered'])->count(),
             'revenue' => Order::whereIn('status', ['paid', 'processing', 'completed'])->sum('total_amount'),
         ];
         $latestOrders = Order::with('user')->latest()->limit(10)->get();
@@ -123,6 +125,21 @@ class AdminController extends Controller
             'completed_at' => $data['status'] === 'completed' ? ($order->completed_at ?: now()) : $order->completed_at,
         ]);
         return back()->with('success', 'سفارش بروزرسانی شد.');
+    }
+
+    public function tickets(): View
+    {
+        $this->authorizeAdmin();
+        $tickets = Ticket::with('user')->latest()->paginate(20);
+        return view('admin.tickets', compact('tickets'));
+    }
+
+    public function ticketUpdate(Request $request, Ticket $ticket): RedirectResponse
+    {
+        $this->authorizeAdmin();
+        $data = $request->validate(['status' => ['required', 'in:open,answered,closed'], 'priority' => ['required', 'in:low,normal,high']]);
+        $ticket->update($data);
+        return back()->with('success', 'تیکت بروزرسانی شد.');
     }
 
     public function manualCredit(Request $request, User $user): RedirectResponse
