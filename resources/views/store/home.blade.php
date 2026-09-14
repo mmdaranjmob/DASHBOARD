@@ -1,12 +1,39 @@
 @extends('layouts.store')
 
 @section('content')
+<style>
+.home-slider{position:relative;margin-bottom:16px;overflow:hidden;border-radius:20px;border:1px solid #e2eaf0;background:#fff;box-shadow:0 5px 22px rgba(33,62,86,.05)}
+.home-slide{display:none;position:relative}.home-slide.active{display:block}.home-slide img{display:block;width:100%;height:190px;object-fit:cover}.home-slide-link{display:block}.home-slider-empty{height:156px;display:flex;align-items:center;justify-content:center;background:linear-gradient(100deg,#e8f6fd,#fbfdff);color:#628092;font-size:16px}
+.home-slider-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border:1px solid rgba(255,255,255,.7);border-radius:50%;background:rgba(25,43,57,.38);color:#fff;display:grid;place-items:center;cursor:pointer;font-size:20px;z-index:2}.home-slider-prev{right:14px}.home-slider-next{left:14px}.home-slider-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2}.home-slider-dot{width:7px;height:7px;border:0;border-radius:50%;padding:0;background:rgba(255,255,255,.65);cursor:pointer}.home-slider-dot.active{width:20px;border-radius:10px;background:#fff}
+@media(max-width:680px){.home-slide img{height:125px}.home-slider-arrow{width:32px;height:32px;font-size:17px}.home-slider-prev{right:9px}.home-slider-next{left:9px}}
+</style>
+
 <section class="store-page">
     <div class="banner-wrap">
-        @if($bannerUrl)
-            <a class="store-banner" href="{{ $bannerLink ?: '#' }}" @if(!$bannerLink) aria-label="بنر فروشگاه" @endif>
-                <img src="{{ $bannerUrl }}" alt="بنر {{ $siteName }}">
-            </a>
+        @if($bannerSlides->isNotEmpty())
+            <div class="home-slider" data-home-slider>
+                @foreach($bannerSlides as $index => $slide)
+                    @php($slideLink = trim((string) ($slide['link'] ?? '')))
+                    <div class="home-slide {{ $index === 0 ? 'active' : '' }}" data-slide>
+                        @if($slideLink)
+                            <a class="home-slide-link" href="{{ $slideLink }}">
+                                <img src="{{ $slide['image'] }}" alt="بنر {{ $siteName }}">
+                            </a>
+                        @else
+                            <img src="{{ $slide['image'] }}" alt="بنر {{ $siteName }}">
+                        @endif
+                    </div>
+                @endforeach
+                @if($bannerSlides->count() > 1)
+                    <button type="button" class="home-slider-arrow home-slider-prev" data-prev aria-label="اسلاید قبلی">›</button>
+                    <button type="button" class="home-slider-arrow home-slider-next" data-next aria-label="اسلاید بعدی">‹</button>
+                    <div class="home-slider-dots" aria-label="انتخاب اسلاید">
+                        @foreach($bannerSlides as $index => $slide)
+                            <button type="button" class="home-slider-dot {{ $index === 0 ? 'active' : '' }}" data-dot="{{ $index }}" aria-label="اسلاید {{ $index + 1 }}"></button>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
         @else
             <div class="store-banner banner-placeholder">{{ $siteName }} — خدمات دیجیتال با تحویل سریع</div>
         @endif
@@ -103,4 +130,30 @@
         </section>
     </div>
 </section>
+
+@if($bannerSlides->count() > 1)
+<script>
+(() => {
+    const slider = document.querySelector('[data-home-slider]');
+    if (!slider) return;
+    const slides = [...slider.querySelectorAll('[data-slide]')];
+    const dots = [...slider.querySelectorAll('[data-dot]')];
+    let index = 0;
+    let timer;
+    const show = (next) => {
+        index = (next + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    };
+    const restart = () => {
+        clearInterval(timer);
+        timer = setInterval(() => show(index + 1), 5000);
+    };
+    slider.querySelector('[data-prev]')?.addEventListener('click', () => { show(index - 1); restart(); });
+    slider.querySelector('[data-next]')?.addEventListener('click', () => { show(index + 1); restart(); });
+    dots.forEach(dot => dot.addEventListener('click', () => { show(Number(dot.dataset.dot)); restart(); }));
+    restart();
+})();
+</script>
+@endif
 @endsection
