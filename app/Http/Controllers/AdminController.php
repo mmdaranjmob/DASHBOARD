@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Models\WalletTransaction;
@@ -32,6 +33,38 @@ class AdminController extends Controller
         ];
         $latestOrders = Order::with('user')->latest()->limit(10)->get();
         return view('admin.dashboard', compact('stats', 'latestOrders'));
+    }
+
+    public function settings(): View
+    {
+        $this->authorizeAdmin();
+        return view('admin.settings', [
+            'siteName' => StoreSetting::get('site_name', 'NumberLand'),
+            'logoUrl' => StoreSetting::get('logo_url', ''),
+            'bannerUrl' => StoreSetting::get('banner_url', ''),
+            'bannerLink' => StoreSetting::get('banner_link', ''),
+            'supportUrl' => StoreSetting::get('support_url', ''),
+            'supportLabel' => StoreSetting::get('support_label', 'پشتیبانی'),
+        ]);
+    }
+
+    public function settingsUpdate(Request $request): RedirectResponse
+    {
+        $this->authorizeAdmin();
+        $data = $request->validate([
+            'site_name' => ['required', 'string', 'max:100'],
+            'logo_url' => ['nullable', 'url', 'max:2048'],
+            'banner_url' => ['nullable', 'url', 'max:2048'],
+            'banner_link' => ['nullable', 'url', 'max:2048'],
+            'support_url' => ['nullable', 'url', 'max:2048'],
+            'support_label' => ['required', 'string', 'max:80'],
+        ]);
+
+        foreach ($data as $key => $value) {
+            StoreSetting::set($key, $value ?? '');
+        }
+
+        return back()->with('success', 'تنظیمات فروشگاه ذخیره شد.');
     }
 
     public function users(Request $request): View
@@ -96,13 +129,23 @@ class AdminController extends Controller
     public function categoryStore(Request $request): RedirectResponse
     {
         $this->authorizeAdmin();
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:categories,slug'],
-            'description' => ['nullable', 'string'],
-        ]);
-        Category::create($data + ['is_active' => true]);
+        $data = $this->validateCategory($request);
+        Category::create($data + ['is_active' => $request->boolean('is_active', true)]);
         return back()->with('success', 'دسته‌بندی ایجاد شد.');
+    }
+
+    public function categoryEdit(Category $category): View
+    {
+        $this->authorizeAdmin();
+        return view('admin.category-form', compact('category'));
+    }
+
+    public function categoryUpdate(Request $request, Category $category): RedirectResponse
+    {
+        $this->authorizeAdmin();
+        $data = $this->validateCategory($request, $category->id);
+        $category->update($data + ['is_active' => $request->boolean('is_active')]);
+        return redirect()->route('admin.categories')->with('success', 'دسته‌بندی ویرایش شد.');
     }
 
     public function orders(Request $request): View
@@ -160,6 +203,19 @@ class AdminController extends Controller
         return back()->with('success', 'کیف پول مشتری شارژ شد.');
     }
 
+    private function validateCategory(Request $request, ?int $ignoreId = null): array
+    {
+        $uniqueSlug = 'unique:categories,slug' . ($ignoreId ? ",{$ignoreId}" : '');
+        return $request->validate([
+            'parent_id' => ['nullable', 'exists:categories,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255', $uniqueSlug],
+            'description' => ['nullable', 'string'],
+            'image' => ['nullable', 'url', 'max:2048'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
+        ]);
+    }
+
     private function validateProduct(Request $request, ?int $ignoreId = null): array
     {
         $uniqueSlug = 'unique:products,slug'.($ignoreId ? ",{$ignoreId}" : '');
@@ -168,6 +224,7 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', $uniqueSlug],
             'description' => ['nullable', 'string'],
+            'image' => ['nullable', 'url', 'max:2048'],
             'price' => ['required', 'integer', 'min:0'],
             'old_price' => ['nullable', 'integer', 'min:0'],
             'currency' => ['required', 'string', 'max:10'],
