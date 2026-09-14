@@ -113,6 +113,14 @@ class AdminController extends Controller
         return redirect()->route('admin.products')->with('success', 'محصول ویرایش شد.');
     }
 
+    public function productMediaUpdate(Request $request, Product $product): RedirectResponse
+    {
+        $this->authorizeAdmin();
+        $data = $request->validate(['image' => ['nullable', 'url', 'max:2048']]);
+        $product->update(['image' => $data['image'] ?? '']);
+        return back()->with('success', 'آیکن سرویس بروزرسانی شد.');
+    }
+
     public function productToggle(Product $product): RedirectResponse
     {
         $this->authorizeAdmin();
