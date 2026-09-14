@@ -23,5 +23,30 @@
             <a class="btn btn-dark" href="{{ route('admin.products') }}">لغو</a>
         </form>
     </div>
+
+    @if($product)
+    <div class="card" style="max-width:760px;margin:20px auto">
+        <h3>فیلدهای اختصاصی محصول</h3>
+        <div class="muted" style="margin-bottom:14px">برای فیلدهای انتخابی، هر خط را به شکل «عنوان | مقدار» بنویس.</div>
+        @forelse($product->fields as $field)
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #eee;flex-wrap:wrap">
+                <div><strong>{{ $field->name }}</strong><span class="muted"> — {{ $field->key }} — {{ $field->type }}{{ $field->is_required ? ' — اجباری' : '' }}</span></div>
+                <form method="POST" action="{{ route('admin.products.fields.destroy', $field) }}">@csrf @method('DELETE')<button class="btn btn-dark">حذف</button></form>
+            </div>
+        @empty <div class="empty">هنوز فیلدی تعریف نشده.</div> @endforelse
+
+        <form method="POST" action="{{ route('admin.products.fields.store', $product) }}" style="margin-top:18px">
+            @csrf
+            <div class="form-group"><label>نام فیلد</label><input name="name" placeholder="مثلاً نام کاربری تلگرام" required></div>
+            <div class="form-group"><label>کلید انگلیسی</label><input name="key" placeholder="telegram_username" required></div>
+            <div class="form-group"><label>نوع</label><select name="type"><option value="text">متن</option><option value="number">عدد</option><option value="textarea">متن چندخطی</option><option value="select">انتخابی</option></select></div>
+            <div class="form-group"><label>توضیح</label><input name="description"></div>
+            <div class="form-group"><label>ترتیب</label><input type="number" name="sort_order" min="0" value="0"></div>
+            <div class="form-group"><label>گزینه‌ها برای نوع انتخابی</label><textarea name="options" rows="4" placeholder="یک ماه | 1month&#10;سه ماه | 3month"></textarea></div>
+            <label style="display:block;margin:12px 0"><input type="checkbox" name="is_required" value="1"> اجباری</label>
+            <button class="btn btn-dark">افزودن فیلد</button>
+        </form>
+    </div>
+    @endif
 </section>
 @endsection
