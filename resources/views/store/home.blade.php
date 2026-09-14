@@ -1,68 +1,81 @@
 @extends('layouts.store')
 
 @section('content')
-<section class="hero">
-    <div class="hero-card">
-        <span class="eyebrow">فروشگاه خدمات دیجیتال</span>
-        <h1>خرید ساده.<br>تحویل سریع.</h1>
-        <p>خدمات دیجیتال موردنیازت را با قیمت شفاف انتخاب کن، سفارش بده و همه‌چیز را از یک حساب مدیریت کن.</p>
-        <div class="hero-actions">
-            @guest
-                <a class="btn btn-light" href="{{ route('auth') }}">ورود / عضویت</a>
-                <a class="btn btn-ghost" style="color:#fff;border-color:#3a3a3a" href="#products">مشاهده محصولات</a>
-            @else
-                <a class="btn btn-light" href="#products">مشاهده محصولات</a>
-                <a class="btn btn-ghost" style="color:#fff;border-color:#3a3a3a" href="{{ route('account.dashboard') }}">حساب کاربری</a>
-            @endguest
-        </div>
+<section class="store-page">
+    <div class="banner-wrap">
+        @if($bannerUrl)
+            <a class="store-banner" href="{{ $bannerLink ?: '#' }}" @if(!$bannerLink) aria-label="بنر فروشگاه" @endif>
+                <img src="{{ $bannerUrl }}" alt="بنر {{ $siteName }}">
+            </a>
+        @else
+            <div class="store-banner banner-placeholder"><strong>{{ $siteName }} — خدمات دیجیتال با تحویل سریع</strong></div>
+        @endif
     </div>
-</section>
 
-<section class="section">
-    <div class="section-head">
-        <div class="section-title"><h2>دسته‌بندی‌ها</h2><p>انتخاب سریع بر اساس نوع خدمات</p></div>
-    </div>
-    @if($categories->isEmpty())
-        <div class="empty">هنوز دسته‌بندی‌ای ثبت نشده است.</div>
-    @else
-        <div class="grid">
-            @foreach($categories as $category)
-                <a class="card card-link category-card" href="#products">
-                    <span class="category-icon">{{ mb_substr($category->name,0,1) }}</span>
-                    <span class="category-title">{{ $category->name }}</span>
-                    <span class="muted">مشاهده محصولات</span>
+    <div class="store-shell">
+        <aside class="category-sidebar" aria-label="دسته‌های خدمات">
+            @forelse($categories as $category)
+                <a class="category-item {{ $selectedCategory?->id === $category->id ? 'active' : '' }}" href="{{ route('home', ['category' => $category->slug]) }}">
+                    <span class="category-label">{{ $category->name }}</span>
+                    <span class="category-icon">
+                        @if($category->image)<img src="{{ $category->image }}" alt="" style="width:22px;height:22px;object-fit:contain">@else{{ mb_substr($category->name,0,1) }}@endif
+                    </span>
                 </a>
-            @endforeach
-        </div>
-    @endif
-</section>
+            @empty
+                <div class="empty-box">هنوز دسته‌ای در فروشگاه ثبت نشده است.</div>
+            @endforelse
 
-@if($featuredProducts->isNotEmpty())
-<section class="section">
-    <div class="section-head">
-        <div class="section-title"><h2>انتخاب‌های ویژه</h2><p>محصولات منتخب فروشگاه</p></div>
-        <a class="btn btn-soft" href="#products">همه محصولات</a>
-    </div>
-    <div class="grid">
-        @foreach($featuredProducts as $product)
-            @include('store.partials.product-card', ['product' => $product])
-        @endforeach
-    </div>
-</section>
-@endif
+            @auth
+                @if(\App\Models\StoreSetting::get('support_url', ''))
+                    <a class="category-item" href="{{ \App\Models\StoreSetting::get('support_url') }}"><span class="category-label">{{ \App\Models\StoreSetting::get('support_label', 'پشتیبانی') }}</span><span class="category-icon">?</span></a>
+                @endif
+            @endauth
+        </aside>
 
-<section class="section" id="products">
-    <div class="section-head">
-        <div class="section-title"><h2>محصولات</h2><p>قیمت شفاف، خرید سریع و پیگیری سفارش</p></div>
+        <section class="catalog-card">
+            <div class="tabs" role="tablist" aria-label="نوع خدمات">
+                @forelse($tabs as $tab)
+                    <a class="tab {{ $selectedTab?->id === $tab->id ? 'active' : '' }}" href="{{ route('home', ['category' => $selectedCategory->slug, 'tab' => $tab->slug]) }}">{{ $tab->name }}</a>
+                @empty
+                    <span class="tab active">{{ $selectedCategory?->name ?: 'خدمات' }}</span>
+                @endforelse
+            </div>
+
+            <div class="catalog-top">
+                <div class="catalog-title">{{ $selectedTab?->name ?: ($selectedCategory?->name ?: 'خدمات') }}</div>
+                <form class="search-box" method="GET" action="{{ route('home') }}">
+                    @if($selectedCategory)<input type="hidden" name="category" value="{{ $selectedCategory->slug }}">@endif
+                    @if($selectedTab)<input type="hidden" name="tab" value="{{ $selectedTab->slug }}">@endif
+                    <input name="q" value="{{ request('q') }}" placeholder="جستجو در سرویس‌ها" aria-label="جستجو در سرویس‌ها">
+                </form>
+            </div>
+
+            <div class="service-layout">
+                <div class="empty-panel">
+                    <div class="empty-inner">
+                        <div class="empty-art" aria-hidden="true"><div class="empty-stars"></div><div class="empty-astronaut"></div><div class="empty-planet"></div></div>
+                        <div class="empty-text"><strong>{{ $products->isEmpty() ? 'شماره فعال برای نمایش وجود ندارد' : 'سرویس‌های موجود در این بخش' }}</strong><p>دسته یا سرویس موردنظر را انتخاب کن. خریدهای قبلی از قسمت تاریخچه قابل مشاهده هستند.</p></div>
+                    </div>
+                </div>
+
+                <div class="service-list">
+                    @if($products->isEmpty())
+                        <div class="empty-box">برای این دسته هنوز سرویسی ثبت نشده است.</div>
+                    @else
+                        @foreach($products as $product)
+                            <a class="service-row" href="{{ route('product.show', $product) }}">
+                                <span class="service-icon">
+                                    @if($product->image)<img src="{{ $product->image }}" alt="" style="width:18px;height:18px;object-fit:contain">@else{{ mb_substr($product->name,0,1) }}@endif
+                                </span>
+                                <span class="service-name">{{ $product->name }}</span>
+                                <span class="service-price">{{ number_format($product->price) }} {{ $product->currency === 'IRR' ? 'ریال' : $product->currency }}</span>
+                                <span class="service-action">‹</span>
+                            </a>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </section>
     </div>
-    @if($products->isEmpty())
-        <div class="empty">محصولی برای نمایش وجود ندارد.</div>
-    @else
-        <div class="grid">
-            @foreach($products as $product)
-                @include('store.partials.product-card', ['product' => $product])
-            @endforeach
-        </div>
-    @endif
 </section>
 @endsection
