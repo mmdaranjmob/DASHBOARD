@@ -38,11 +38,19 @@ class AdminController extends Controller
     public function settings(): View
     {
         $this->authorizeAdmin();
+        $slides = json_decode((string) StoreSetting::get('banner_slides', ''), true);
+        if (!is_array($slides) || $slides === []) {
+            $legacyImage = StoreSetting::get('banner_url', '');
+            $legacyLink = StoreSetting::get('banner_link', '');
+            $slides = $legacyImage ? [['image' => $legacyImage, 'link' => $legacyLink]] : [];
+        }
+
         return view('admin.settings', [
             'siteName' => StoreSetting::get('site_name', 'NumberLand'),
             'logoUrl' => StoreSetting::get('logo_url', ''),
             'bannerUrl' => StoreSetting::get('banner_url', ''),
             'bannerLink' => StoreSetting::get('banner_link', ''),
+            'bannerSlides' => collect($slides)->filter(fn ($slide) => !empty($slide['image']))->values()->all(),
             'supportUrl' => StoreSetting::get('support_url', ''),
             'supportLabel' => StoreSetting::get('support_label', 'پشتیبانی'),
         ]);
@@ -58,11 +66,25 @@ class AdminController extends Controller
             'banner_link' => ['nullable', 'url', 'max:2048'],
             'support_url' => ['nullable', 'url', 'max:2048'],
             'support_label' => ['required', 'string', 'max:80'],
+            'slides' => ['nullable', 'array', 'max:20'],
+            'slides.*.image' => ['nullable', 'url', 'max:2048'],
+            'slides.*.link' => ['nullable', 'url', 'max:2048'],
         ]);
 
-        foreach ($data as $key => $value) {
-            StoreSetting::set($key, $value ?? '');
+        foreach (['site_name', 'logo_url', 'banner_url', 'banner_link', 'support_url', 'support_label'] as $key) {
+            StoreSetting::set($key, $data[$key] ?? '');
         }
+
+        $slides = collect($data['slides'] ?? [])
+            ->map(fn ($slide) => [
+                'image' => trim((string) ($slide['image'] ?? '')),
+                'link' => trim((string) ($slide['link'] ?? '')),
+            ])
+            ->filter(fn ($slide) => $slide['image'] !== '')
+            ->values()
+            ->all();
+
+        StoreSetting::set('banner_slides', json_encode($slides, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return back()->with('success', 'تنظیمات فروشگاه ذخیره شد.');
     }
