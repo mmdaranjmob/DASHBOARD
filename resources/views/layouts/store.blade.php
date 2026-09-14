@@ -24,14 +24,14 @@
                 <span style="color:#9ca3af">کیف پول: {{ number_format(auth()->user()->wallet?->balance ?? 0) }} ریال</span>
                 <form method="POST" action="{{ route('logout') }}" style="display:inline">@csrf<button type="submit">خروج</button></form>
             @else
-                <a href="{{ route('login') }}">ورود</a>
-                <a href="{{ route('register') }}">ثبت‌نام</a>
+                <a href="{{ route('auth') }}">ورود / عضویت</a>
             @endauth
         </div>
     </div>
 </nav>
 <main class="container">
     @if(session('success')) <div class="flash">{{ session('success') }}</div> @endif
+    @if(session('info')) <div class="flash">{{ session('info') }}</div> @endif
     @if($errors->any()) <div class="errors">{{ $errors->first() }}</div> @endif
     @yield('content')
 </main>
