@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/products', [AdminController::class, 'productStore'])->name('products.store');
         Route::get('/products/{product}/edit', [AdminController::class, 'productEdit'])->name('products.edit');
         Route::put('/products/{product}', [AdminController::class, 'productUpdate'])->name('products.update');
+        Route::post('/products/{product}/media', [AdminController::class, 'productMediaUpdate'])->name('products.media.update');
         Route::post('/products/{product}/toggle', [AdminController::class, 'productToggle'])->name('products.toggle');
         Route::post('/products/{product}/fields', [AdminProductFieldController::class, 'store'])->name('products.fields.store');
         Route::delete('/product-fields/{field}', [AdminProductFieldController::class, 'destroy'])->name('products.fields.destroy');
