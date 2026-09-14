@@ -14,6 +14,7 @@
         <a class="brand" href="{{ route('home') }}">DASHBOARD</a>
         <div class="navlinks">
             <a href="{{ route('home') }}">فروشگاه</a>
+            <a href="{{ route('cart.index') }}">🛒 سبد خرید <span style="display:inline-flex;min-width:22px;height:22px;align-items:center;justify-content:center;border-radius:999px;background:#374151;font-size:12px">{{ collect(session('cart', []))->sum(fn($item) => (int) ($item['quantity'] ?? 0)) }}</span></a>
             @auth
                 <a href="{{ route('account.dashboard') }}">حساب من</a>
                 <a href="{{ route('account.orders') }}">سفارش‌ها</a>
