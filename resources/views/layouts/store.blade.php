@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#f6f8fb">
     <title>{{ $siteName ?? config('app.name', 'DASHBOARD') }}</title>
     <style>
-        :root{--bg:#f4f7fb;--surface:#fff;--text:#3f566b;--strong:#294156;--muted:#8b9aaa;--line:#e7edf2;--blue:#08a9df;--green:#24b77e;--orange:#f4a31d;--shadow:0 10px 30px rgba(38,69,95,.055)}
+        :root{--bg:#f4f7fb;--surface:#fff;--text:#3f566b;--strong:#294156;--muted:#8b9aaa;--line:#e7edf2;--blue:#08a9df;--green:#24b77e;--orange:#f4a31d;--admin-bg:#f5f5f7;--admin-side:#ededf0;--shadow:0 10px 30px rgba(38,69,95,.055)}
         *{box-sizing:border-box}
         html{background:var(--bg)}
         body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -29,14 +29,21 @@
         .store-info{margin-top:18px;display:grid;grid-template-columns:1.25fr .9fr;gap:18px}.info-card{background:#fff;border:1px solid #e7edf2;border-radius:18px;box-shadow:0 4px 18px rgba(37,64,92,.04);padding:20px}.info-title{margin:0 0 8px;color:#30495d;font-size:15px}.info-copy{margin:0;color:#7f909e;font-size:11px;line-height:2.05}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.feature{padding:12px;border:1px solid #edf1f4;border-radius:12px;background:#fbfcfd}.feature b{display:block;font-size:11px;color:#536c7e;margin-bottom:4px}.feature span{font-size:10px;color:#99a6b1;line-height:1.7}.trust-list{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}.trust-item{min-height:66px;border:1px solid #edf1f4;border-radius:12px;background:#fbfcfd;display:flex;align-items:center;justify-content:center;text-align:center;color:#8a9aa7;font-size:10px;padding:10px}.floating-support{position:fixed;right:22px;bottom:20px;width:49px;height:49px;border-radius:16px;background:#fff;border:1px solid #e3eaf0;box-shadow:0 9px 25px rgba(34,61,84,.13);display:grid;place-items:center;color:var(--orange);z-index:80}.support-svg{width:24px;height:24px}
         .section{padding:22px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:#fff;border:1px solid #e7edf2;border-radius:16px;box-shadow:0 4px 16px rgba(39,68,92,.04)}.form-box{width:min(700px,100%);margin:28px auto;padding:25px;background:#fff;border:1px solid #e5ecf1;border-radius:18px;box-shadow:var(--shadow)}.form-box h1,.form-box h2{margin:0 0 7px;color:#30485d}.form-group{margin-bottom:14px}.form-group label{display:block;margin-bottom:7px;color:#50687a;font-size:12px;font-weight:800}.form-group input,.form-group select,.form-group textarea{width:100%;border:1px solid #dbe4eb;border-radius:9px;padding:11px 12px;background:#fff;color:#31495e;outline:0}.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#8ed9f2;box-shadow:0 0 0 3px rgba(18,174,231,.08)}.footer{padding:28px 0 36px;text-align:center;color:#9daab5;font-size:10px}
         .admin-section{padding:24px 0}.admin-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}.admin-kicker{font-size:10px;color:#08a0d7;font-weight:900;margin-bottom:4px}.admin-head h1{margin:0;color:#2b4357;font-size:24px}.admin-head p{margin:7px 0 0;color:#8c9aa6;font-size:11px}.admin-panel{background:#fff;border:1px solid #e6edf2;border-radius:18px;box-shadow:0 5px 20px rgba(37,64,92,.05);padding:18px}.admin-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.8fr);gap:16px}.panel-title{display:flex;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid #eef2f5;margin-bottom:4px}.panel-title strong{color:#31495e;font-size:13px}.panel-title span{display:block;margin-top:4px;color:#94a1ad;font-size:10px}.admin-list{display:flex;flex-direction:column}.admin-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #f0f3f5}.admin-row:last-child{border-bottom:0}.row-main{display:flex;align-items:center;gap:11px;min-width:0}.row-main strong{display:block;color:#40586d;font-size:12px}.row-main small{display:block;margin-top:4px;color:#99a6b2;font-size:10px}.admin-avatar{width:38px;height:38px;border-radius:11px;background:#f1f8fc;color:#10a9df;display:grid;place-items:center;font-weight:900;flex:0 0 auto}.row-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}.status{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:800}.status-on{color:#198458;background:#effaf4}.status-off{color:#a77171;background:#fff2f2}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.form-span-2{grid-column:1/-1}.form-actions{display:flex;gap:8px;margin-top:18px}.check-row{display:flex;align-items:center;gap:8px;font-size:11px;color:#607487}.check-row input{accent-color:#10abe0}.settings-preview{margin-top:10px;padding:10px;border:1px solid #e7edf2;border-radius:12px;background:#fafcfd}.settings-preview span{display:block;color:#8293a1;font-size:10px;margin-bottom:8px}.settings-preview img{display:block;width:100%;max-height:160px;object-fit:cover;border-radius:8px}.admin-nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.admin-nav a{padding:9px 12px;border:1px solid #e5ebf0;background:#fff;border-radius:9px;color:#607486;font-size:11px}.admin-nav a:hover{border-color:#cae7f1;color:#079fd5;background:#f9fdff}
-        @media(max-width:1080px){.header-inner{grid-template-columns:155px 1fr auto}.main-nav{display:none}.store-main{grid-template-columns:1fr}.category-sidebar{display:grid;grid-template-columns:repeat(4,1fr)}.catalog-body{grid-template-columns:1fr}.empty-panel{min-height:350px;order:2}.store-info{grid-template-columns:1fr}.admin-layout{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}}
+        .admin-shell{direction:ltr;display:grid;grid-template-columns:minmax(0,1fr) 258px;min-height:calc(100vh - 68px);background:var(--admin-bg);margin:0 -17px -34px}
+        .admin-content{direction:rtl;min-width:0;padding:25px 28px 42px;background:#f7f7f8}
+        .admin-sidebar{direction:rtl;background:var(--admin-side);border-left:1px solid #d8d8dc;min-height:100%;padding:16px 10px 24px;position:sticky;top:0;height:calc(100vh - 68px);overflow:auto;color:#25242a}
+        .admin-side-brand{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:0 8px 18px;border-bottom:1px solid #dadadd}.admin-side-brand-main{display:flex;align-items:center;gap:10px}.admin-side-brand-mark{width:38px;height:38px;border-radius:10px;background:#fff;border:1px solid #d9d9dd;display:grid;place-items:center;font-weight:900;color:#444}.admin-side-brand strong{display:block;font-size:14px;color:#29292e}.admin-side-brand small{display:block;font-size:8px;color:#b47e49;margin-top:3px}.admin-side-collapse{font-size:17px;color:#777;line-height:1;padding-top:2px}.admin-side-section{padding:14px 4px 4px}.admin-side-caption{padding:0 10px 7px;color:#98989d;font-size:9px;font-weight:700}.admin-side-link{display:flex;align-items:center;gap:9px;min-height:38px;padding:0 10px;margin:2px 0;border-radius:10px;color:#44444b;font-size:11px;transition:.12s}.admin-side-link:hover{background:#e4e4e7;color:#25252b}.admin-side-link.active{background:#dedee2;color:#24242a;font-weight:900;border-right:3px solid #4a4a52}.admin-side-icon{width:20px;height:20px;display:grid;place-items:center;color:#6e6e75;flex:0 0 auto}.admin-side-link.active .admin-side-icon{color:#2f3035}.admin-side-divider{height:1px;background:#dadadd;margin:9px 6px}.admin-side-user{margin:14px 4px 0;padding:10px;background:#e4e4e7;border:1px solid #d8d8dc;border-radius:12px}.admin-side-user strong{display:block;font-size:10px;color:#36363b}.admin-side-user span{display:block;margin-top:4px;font-size:9px;color:#84848a}
+        @media(max-width:1080px){.header-inner{grid-template-columns:155px 1fr auto}.main-nav{display:none}.store-main{grid-template-columns:1fr}.category-sidebar{display:grid;grid-template-columns:repeat(4,1fr)}.catalog-body{grid-template-columns:1fr}.empty-panel{min-height:350px;order:2}.store-info{grid-template-columns:1fr}.admin-layout{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.admin-shell{grid-template-columns:minmax(0,1fr) 220px}.admin-content{padding:22px 18px 38px}}
+        @media(max-width:760px){.admin-shell{grid-template-columns:1fr;margin:0 -9px -34px}.admin-sidebar{position:relative;height:auto;min-height:0;border-left:0;border-bottom:1px solid #d8d8dc;padding-bottom:12px}.admin-side-section{display:grid;grid-template-columns:repeat(2,1fr);gap:3px}.admin-side-caption{grid-column:1/-1}.admin-side-user{display:none}.admin-content{padding:18px 12px 34px}}
         @media(max-width:680px){.container{width:calc(100% - 18px)}.site-header,.header-inner{height:58px}.header-inner{grid-template-columns:1fr auto;gap:9px}.brand-logo{width:112px}.header-pill{height:34px;padding:0 9px}.balance-pill{display:none}.avatar-link span{display:none}.page{min-height:calc(100vh - 104px)}.store-banner img,.banner-placeholder{height:108px}.catalog-card{padding:13px}.catalog-tabs{gap:4px}.catalog-tab{font-size:11px;padding-inline:8px}.catalog-head{flex-direction:column;align-items:stretch}.catalog-heading{font-size:14px}.category-sidebar{grid-template-columns:1fr 1fr;gap:8px}.category-item{min-height:51px}.category-icon{width:35px;height:35px}.service-row{min-height:43px}.service-price{font-size:10px}.store-info{gap:12px}.feature-grid{grid-template-columns:1fr}.trust-list{grid-template-columns:1fr 1fr}.admin-head{align-items:flex-start;flex-direction:column}.admin-row{align-items:flex-start}.row-actions .status{display:none}.form-grid{grid-template-columns:1fr}.form-span-2{grid-column:auto}.grid{grid-template-columns:1fr}.floating-support{right:13px;bottom:13px;width:44px;height:44px}}
     </style>
 </head>
-<body>
+@php($isAdminArea = request()->is('admin*'))
 @php($siteName = \App\Models\StoreSetting::get('site_name', 'NumberLand'))
 @php($logoUrl = \App\Models\StoreSetting::get('logo_url', ''))
 @php($supportUrl = \App\Models\StoreSetting::get('support_url', ''))
+<body>
+@if(!$isAdminArea)
 <header class="site-header">
     <div class="container header-inner">
         <a class="brand" href="{{ route('home') }}">
@@ -55,9 +62,6 @@
             @auth
                 <a href="{{ route('account.orders') }}">سفارش‌ها</a>
                 <a href="{{ route('account.tickets') }}">پشتیبانی</a>
-                @if(auth()->user()->isAdmin())
-                    <a href="{{ route('admin.dashboard') }}">مدیریت</a>
-                @endif
             @endauth
         </nav>
         <div class="header-actions">
@@ -73,12 +77,58 @@
                     <span>{{ auth()->user()->name ?: 'کاربر' }}</span>
                     <span class="avatar">●</span>
                 </a>
+                <form method="POST" action="{{ route('logout') }}" style="display:inline">
+                    @csrf
+                    <button class="header-pill" type="submit">خروج</button>
+                </form>
             @else
-                <a class="header-pill" href="{{ route('auth') }}">ورود / عضویت</a>
+                <a class="header-pill" href="{{ route('auth') }}">ورود / ثبت‌نام</a>
             @endauth
         </div>
     </div>
 </header>
+@endif
+@if($isAdminArea)
+<div class="admin-shell">
+    <aside class="admin-sidebar" aria-label="ناوبری مدیریت">
+        <div class="admin-side-brand">
+            <div class="admin-side-brand-main">
+                <span class="admin-side-brand-mark">D</span>
+                <div><strong>{{ $siteName }}</strong><small>پنل مدیریت فروشگاه</small></div>
+            </div>
+            <span class="admin-side-collapse">»</span>
+        </div>
+        <div class="admin-side-section">
+            <div class="admin-side-caption">مدیریت اصلی</div>
+            <a class="admin-side-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><span class="admin-side-icon">⌂</span><span>داشبورد</span></a>
+            <a class="admin-side-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}" href="{{ route('admin.users') }}"><span class="admin-side-icon">♙</span><span>کاربران</span></a>
+            <a class="admin-side-link {{ request()->routeIs('admin.products*') ? 'active' : '' }}" href="{{ route('admin.products') }}"><span class="admin-side-icon">▦</span><span>محصولات و خدمات</span></a>
+            <a class="admin-side-link {{ request()->routeIs('admin.categories*') ? 'active' : '' }}" href="{{ route('admin.categories') }}"><span class="admin-side-icon">☷</span><span>دسته‌بندی‌ها</span></a>
+            <a class="admin-side-link {{ request()->routeIs('admin.orders*') ? 'active' : '' }}" href="{{ route('admin.orders') }}"><span class="admin-side-icon">▤</span><span>سفارش‌ها</span></a>
+            <a class="admin-side-link {{ request()->routeIs('admin.tickets*') ? 'active' : '' }}" href="{{ route('admin.tickets') }}"><span class="admin-side-icon">◌</span><span>تیکت‌ها</span></a>
+            <a class="admin-side-link {{ request()->routeIs('admin.settings*') ? 'active' : '' }}" href="{{ route('admin.settings') }}"><span class="admin-side-icon">⚙</span><span>تنظیمات فروشگاه</span></a>
+        </div>
+        <div class="admin-side-divider"></div>
+        <div class="admin-side-section">
+            <div class="admin-side-caption">حساب</div>
+            <a class="admin-side-link" href="{{ route('home') }}"><span class="admin-side-icon">↗</span><span>مشاهده فروشگاه</span></a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button class="admin-side-link" type="submit" style="width:100%;border:0;background:transparent;cursor:pointer;text-align:right"><span class="admin-side-icon">⇥</span><span>خروج</span></button>
+            </form>
+        </div>
+        @auth
+            <div class="admin-side-user"><strong>{{ auth()->user()->name ?: 'مدیر' }}</strong><span>سطح دسترسی: {{ auth()->user()->hasRole('super_admin') ? 'Super Admin' : 'Admin' }}</span></div>
+        @endauth
+    </aside>
+    <main class="admin-content">
+        @if(session('success'))<div class="flash">{{ session('success') }}</div>@endif
+        @if(session('info'))<div class="flash">{{ session('info') }}</div>@endif
+        @if($errors->any())<div class="errors">{{ $errors->first() }}</div>@endif
+        @yield('content')
+    </main>
+</div>
+@else
 <main class="page container">
     @if(session('success'))
         <div class="flash">{{ session('success') }}</div>
@@ -100,5 +150,6 @@
     </a>
 @endif
 <footer class="footer">© {{ now()->year }} {{ $siteName }}</footer>
+@endif
 </body>
 </html>
