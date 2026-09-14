@@ -38,6 +38,13 @@ class StoreController extends Controller
             $productQuery->whereRaw('1 = 0');
         }
 
+        if ($search = trim((string) $request->query('q'))) {
+            $productQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
         $products = $productQuery->limit(30)->get();
 
         return view('store.home', [
