@@ -9,7 +9,7 @@ function updateCart(){
   if(btn)btn.setAttribute('aria-label',count?`سبد خرید، ${money.format(count)} قلم`:'سبد خرید خالی');
 }
 function toast(message){
-  const el=document.querySelector('[data-toast]'); if(!el)return;
+  const el=document.querySelector('[data-toast]');if(!el)return;
   el.textContent=message;el.classList.add('show');clearTimeout(window.__toastTimer);
   window.__toastTimer=setTimeout(()=>el.classList.remove('show'),2400);
 }
