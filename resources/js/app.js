@@ -1,4 +1,3 @@
-import './bootstrap';
 
 const cart = new Map();
 const money = new Intl.NumberFormat('fa-IR');
