@@ -2,6 +2,9 @@
 set -Eeuo pipefail
 
 APP_DIR="/var/www/DASHBOARD"
+HOME="/root"
+export HOME
+export COMPOSER_HOME="/root/.config/composer"
 BRANCH="main"
 LOCK_FILE="/tmp/dashboard-deploy.lock"
 LOG_FILE="/var/log/dashboard-deploy.log"
