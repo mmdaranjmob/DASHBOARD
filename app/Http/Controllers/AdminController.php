@@ -54,7 +54,31 @@ class AdminController extends Controller
             'bannerSlides' => collect($slides)->filter(fn ($slide) => !empty($slide['image']))->values()->all(),
             'supportUrl' => StoreSetting::get('support_url', ''),
             'supportLabel' => StoreSetting::get('support_label', 'پشتیبانی'),
+            'headerMenu' => $this->headerMenu(),
         ]);
+    }
+
+    private function headerMenu(): array
+    {
+        $default = [
+            ['label' => 'خدمات', 'url' => '/'],
+            ['label' => 'وبلاگ', 'url' => '#'],
+            ['label' => 'راهنما', 'url' => '#'],
+            ['label' => 'نمایندگی فروش', 'url' => '#'],
+            ['label' => 'تماس', 'url' => '#'],
+        ];
+
+        $menu = json_decode((string) StoreSetting::get('header_menu', ''), true);
+        if (!is_array($menu) || $menu === []) return $default;
+
+        return collect($menu)
+            ->map(fn ($item) => [
+                'label' => trim((string) ($item['label'] ?? '')),
+                'url' => trim((string) ($item['url'] ?? '#')),
+            ])
+            ->filter(fn ($item) => $item['label'] !== '')
+            ->values()
+            ->all() ?: $default;
     }
 
     public function sliderImageUpload(Request $request)
@@ -83,6 +107,9 @@ class AdminController extends Controller
             'slides' => ['nullable', 'array', 'max:20'],
             'slides.*.image' => ['nullable', 'string', 'max:2048'],
             'slides.*.link' => ['nullable', 'url', 'max:2048'],
+            'header_menu' => ['nullable', 'array', 'max:10'],
+            'header_menu.*.label' => ['required', 'string', 'max:80'],
+            'header_menu.*.url' => ['required', 'string', 'max:2048'],
         ]);
 
         foreach (['site_name', 'logo_url', 'banner_url', 'banner_link', 'support_url', 'support_label'] as $key) {
@@ -99,6 +126,16 @@ class AdminController extends Controller
             ->all();
 
         StoreSetting::set('banner_slides', json_encode($slides, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        $headerMenu = collect($data['header_menu'] ?? [])
+            ->map(fn ($item) => [
+                'label' => trim((string) ($item['label'] ?? '')),
+                'url' => trim((string) ($item['url'] ?? '#')),
+            ])
+            ->filter(fn ($item) => $item['label'] !== '')
+            ->values()
+            ->all();
+        StoreSetting::set('header_menu', json_encode($headerMenu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return back()->with('success', 'تنظیمات فروشگاه ذخیره شد.');
     }
