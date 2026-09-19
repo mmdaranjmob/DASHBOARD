@@ -31,6 +31,7 @@ Route::get('/site-header-config', function () {
         'floating_images' => json_decode((string) StoreSetting::get('floating_images', '[]'), true) ?: [],
     ]);
 })->name('site.header.config');
+Route::get('/products', [StoreController::class, 'products'])->name('products.index');
 Route::get('/products/{product}', [StoreController::class, 'product'])->name('product.show');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
