@@ -9,10 +9,25 @@
     <div class="admin-panel admin-form-panel" style="max-width:1000px">
         <form method="POST" action="{{ route('admin.settings.update') }}">
             @csrf @method('PUT')
-            <div class="form-grid">
-                <div class="form-group"><label>نام فروشگاه</label><input name="site_name" value="{{ old('site_name', $siteName) }}" required></div>
+            <div class="header-settings" style="margin-bottom:24px;padding-bottom:22px;border-bottom:1px solid #eef2f5">
+                <div class="panel-title" style="margin-bottom:15px"><div><strong>تنظیمات سربرگ سایت</strong><span>نام فروشگاه، لوگو و منوهای بالای سایت را از این بخش تغییر بده.</span></div></div>
+                <div class="form-grid">
+                <div class="form-group"><label>نام فروشگاه / عنوان سربرگ</label><input name="site_name" value="{{ old('site_name', $siteName) }}" required></div>
                 <div class="form-group"><label>متن دکمه پشتیبانی</label><input name="support_label" value="{{ old('support_label', $supportLabel) }}" required></div>
                 <div class="form-group form-span-2"><label>آدرس لوگو</label><input name="logo_url" value="{{ old('logo_url', $logoUrl) }}" placeholder="https://.../logo.png"></div>
+                </div>
+                <div style="margin-top:14px">
+                    <div class="panel-title"><div><strong>منوی سربرگ</strong><span>عنوان و لینک هر گزینه را مشخص کن.</span></div><button type="button" class="btn btn-soft btn-sm" id="add-menu-item">+ افزودن گزینه</button></div>
+                    <div id="header-menu-list" style="display:grid;gap:9px;margin-top:12px">
+                        @foreach($headerMenu as $index => $item)
+                        <div data-menu-item style="display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;align-items:end;padding:10px;border:1px solid #e6edf2;border-radius:11px;background:#fbfcfd">
+                            <div class="form-group" style="margin:0"><label>عنوان</label><input name="header_menu[{{ $index }}][label]" value="{{ $item['label'] }}" data-menu-label></div>
+                            <div class="form-group" style="margin:0"><label>لینک</label><input name="header_menu[{{ $index }}][url]" value="{{ $item['url'] }}" placeholder="/blog یا https://..." data-menu-url></div>
+                            <button type="button" class="btn btn-danger btn-sm" data-remove-menu>حذف</button>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
 
             <div class="slider-manager" style="margin-top:22px">
@@ -56,6 +71,36 @@
     const list = document.getElementById('slides-list');
     const add = document.getElementById('add-slide');
     let counter = {{ count($bannerSlides) }};
+    let menuCounter = {{ count($headerMenu) }};
+
+    const menuList = document.getElementById('header-menu-list');
+    const addMenu = document.getElementById('add-menu-item');
+
+    function renumberMenu() {
+        [...menuList.querySelectorAll('[data-menu-item]')].forEach((item, i) => {
+            item.querySelector('[data-menu-label]').name = `header_menu[${i}][label]`;
+            item.querySelector('[data-menu-url]').name = `header_menu[${i}][url]`;
+        });
+    }
+
+    addMenu?.addEventListener('click', () => {
+        const i = menuList.querySelectorAll('[data-menu-item]').length;
+        const item = document.createElement('div');
+        item.setAttribute('data-menu-item', '');
+        item.style.cssText = 'display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;align-items:end;padding:10px;border:1px solid #e6edf2;border-radius:11px;background:#fbfcfd';
+        item.innerHTML = `
+            <div class="form-group" style="margin:0"><label>عنوان</label><input name="header_menu[${i}][label]" placeholder="عنوان منو" data-menu-label></div>
+            <div class="form-group" style="margin:0"><label>لینک</label><input name="header_menu[${i}][url]" placeholder="/page یا https://..." data-menu-url></div>
+            <button type="button" class="btn btn-danger btn-sm" data-remove-menu>حذف</button>`;
+        menuList.appendChild(item);
+        renumberMenu();
+    });
+
+    menuList?.addEventListener('click', e => {
+        if (!e.target.closest('[data-remove-menu]')) return;
+        e.target.closest('[data-menu-item]')?.remove();
+        renumberMenu();
+    });
 
     function emptyNotice() {
         if (!list.querySelector('[data-slide]')) {
@@ -149,6 +194,7 @@
     emptyNotice();
     });
 
+    renumberMenu();
     emptyNotice();
 })();
 </script>
