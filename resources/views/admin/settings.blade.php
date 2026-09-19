@@ -22,7 +22,14 @@
                         <div class="slide-item" style="border:1px solid #e6edf2;border-radius:14px;padding:13px;background:#fbfcfd" data-slide>
                             <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px"><strong style="font-size:11px;color:#40586b">اسلاید <span data-slide-number>{{ $index + 1 }}</span></strong><button type="button" class="btn btn-danger btn-sm" data-remove-slide>حذف</button></div>
                             <div class="form-grid">
-                                <div class="form-group form-span-2"><label>آدرس تصویر</label><input name="slides[{{ $index }}][image]" value="{{ $slide['image'] ?? '' }}" placeholder="https://.../banner.webp" data-slide-image></div>
+                                <div class="form-group form-span-2">
+<label>تصویر اسلاید</label>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<input name="slides[{{ $index }}][image]" value="{{ $slide['image'] ?? '' }}" placeholder="https://.../banner.webp" data-slide-image style="flex:1;min-width:240px">
+<label class="btn btn-soft btn-sm" style="cursor:pointer">انتخاب از سیستم<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-slide-file style="display:none"></label>
+</div>
+<small style="display:block;color:#94a1ad;font-size:9px;margin-top:6px">می‌توانی لینک تصویر بدهی یا فایل را مستقیماً از کامپیوتر انتخاب کنی.</small>
+</div>
                                 <div class="form-group form-span-2"><label>لینک هنگام کلیک (اختیاری)</label><input name="slides[{{ $index }}][link]" value="{{ $slide['link'] ?? '' }}" placeholder="https://..." data-slide-link></div>
                             </div>
                             @if(!empty($slide['image']))
@@ -65,6 +72,38 @@
         }
     }
 
+    async function uploadImage(file, input, button) {
+        if (!file) return;
+        const form = new FormData();
+        form.append('_token', '{{ csrf_token() }}');
+        form.append('image', file);
+        const oldText = button.textContent;
+        button.textContent = 'در حال آپلود...';
+        button.style.pointerEvents = 'none';
+        try {
+            const response = await fetch('{{ route('admin.settings.slider-image') }}', { method: 'POST', body: form });
+            if (!response.ok) throw new Error('upload failed');
+            window.location.reload();
+        } catch (error) {
+            alert('آپلود تصویر انجام نشد. دوباره تلاش کن.');
+            button.textContent = oldText;
+            button.style.pointerEvents = '';
+        }
+    }
+
+    function bindFileInputs(root = list) {
+        root.querySelectorAll('[data-slide-file]').forEach(fileInput => {
+            if (fileInput.dataset.bound) return;
+            fileInput.dataset.bound = '1';
+            fileInput.addEventListener('change', () => {
+                const item = fileInput.closest('[data-slide]');
+                const imageInput = item?.querySelector('[data-slide-image]');
+                const button = fileInput.closest('label');
+                if (fileInput.files[0] && imageInput) uploadImage(fileInput.files[0], imageInput, button);
+            });
+        });
+    }
+
     function renumber() {
         [...list.querySelectorAll('[data-slide]')].forEach((item, i) => {
             item.querySelector('[data-slide-number]').textContent = i + 1;
@@ -81,12 +120,20 @@
         item.innerHTML = `
             <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px"><strong style="font-size:11px;color:#40586b">اسلاید <span data-slide-number></span></strong><button type="button" class="btn btn-danger btn-sm" data-remove-slide>حذف</button></div>
             <div class="form-grid">
-                <div class="form-group form-span-2"><label>آدرس تصویر</label><input placeholder="https://.../banner.webp" data-slide-image></div>
+                <div class="form-group form-span-2">
+<label>تصویر اسلاید</label>
+<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<input placeholder="https://.../banner.webp" data-slide-image style="flex:1;min-width:240px">
+<label class="btn btn-soft btn-sm" style="cursor:pointer">انتخاب از سیستم<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" data-slide-file style="display:none"></label>
+</div>
+<small style="display:block;color:#94a1ad;font-size:9px;margin-top:6px">می‌توانی لینک تصویر بدهی یا فایل را مستقیماً از کامپیوتر انتخاب کنی.</small>
+</div>
                 <div class="form-group form-span-2"><label>لینک هنگام کلیک (اختیاری)</label><input placeholder="https://..." data-slide-link></div>
             </div>`;
         list.appendChild(item);
         counter++;
         renumber();
+        bindFileInputs(item);
     });
 
     list.addEventListener('click', (event) => {
@@ -94,7 +141,8 @@
         if (!button) return;
         button.closest('[data-slide]')?.remove();
         renumber();
-        emptyNotice();
+        bindFileInputs();
+    emptyNotice();
     });
 
     emptyNotice();
