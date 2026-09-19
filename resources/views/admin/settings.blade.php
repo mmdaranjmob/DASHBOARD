@@ -83,7 +83,11 @@
         try {
             const response = await fetch('{{ route('admin.settings.slider-image') }}', { method: 'POST', body: form });
             if (!response.ok) throw new Error('upload failed');
-            window.location.reload();
+            const data = await response.json();
+            input.value = data.url;
+            input.dispatchEvent(new Event('input', {bubbles:true}));
+            button.textContent = 'آپلود شد ✓';
+            setTimeout(() => { button.textContent = oldText; button.style.pointerEvents = ''; }, 1200);
         } catch (error) {
             alert('آپلود تصویر انجام نشد. دوباره تلاش کن.');
             button.textContent = oldText;
