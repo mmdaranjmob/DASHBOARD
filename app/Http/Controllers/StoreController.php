@@ -69,6 +69,47 @@ class StoreController extends Controller
         ]);
     }
 
+    public function products(Request $request): View
+    {
+        $categories = Category::query()
+            ->where('is_active', true)
+            ->whereNull('parent_id')
+            ->withCount(['products as active_products_count' => fn ($query) => $query->where('is_active', true)])
+            ->orderBy('sort_order')
+            ->get();
+
+        $query = Product::query()
+            ->with('category')
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->latest();
+
+        if ($category = trim((string) $request->query('category'))) {
+            $query->whereHas('category', fn ($q) => $q->where('slug', $category));
+        }
+
+        if ($search = trim((string) $request->query('q'))) {
+            $query->where(fn ($q) => $q->where('name', 'like', "%{$search}%")->orWhere('description', 'like', "%{$search}%"));
+        }
+
+        $products = $query->limit(80)->get();
+
+        $bannerSlides = json_decode((string) StoreSetting::get('banner_slides', ''), true);
+        if (!is_array($bannerSlides) || !$bannerSlides) {
+            $bannerUrl = StoreSetting::get('banner_url', '');
+            $bannerSlides = $bannerUrl ? [['image' => $bannerUrl, 'link' => StoreSetting::get('banner_link', '')]] : [];
+        }
+
+        return view('store.products', [
+            'categories' => $categories,
+            'products' => $products,
+            'bannerSlides' => collect($bannerSlides)->filter(fn ($slide) => !empty($slide['image']))->values(),
+            'siteName' => StoreSetting::get('site_name', 'NumberLand'),
+            'logoUrl' => StoreSetting::get('logo_url', ''),
+            'supportUrl' => StoreSetting::get('support_url', ''),
+        ]);
+    }
+
     public function product(Product $product): View
     {
         abort_unless($product->is_active, 404);
