@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vertex Admin — مدیریت</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07090d;color:#eef2f7;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}button{font:inherit}
+.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}.side{border-left:1px solid #20242d;background:#0b0e14;padding:22px 16px;position:sticky;top:0;height:100vh}.brand{display:flex;gap:10px;align-items:center;padding:8px 10px 28px}.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#fff,#737b8d);color:#090b10;display:grid;place-items:center;font-weight:900}.brand b{font-size:17px}.brand span{display:block;color:#70798a;font-size:10px;margin-top:2px}.section{color:#626b7c;font-size:11px;margin:18px 10px 8px}.nav{display:grid;gap:4px}.nav a{color:#9ca5b5;text-decoration:none;padding:11px 12px;border-radius:10px;display:flex;gap:10px;align-items:center;font-size:13px}.nav a:hover,.nav a.active{background:#171b23;color:#fff}.ico{width:20px;text-align:center}.bottom{position:absolute;bottom:18px;right:16px;left:16px}.admin{border-top:1px solid #20242d;padding:15px 8px;display:flex;gap:10px;align-items:center}.avatar{width:35px;height:35px;border-radius:50%;background:#252b36;display:grid;place-items:center}.muted{color:#70798a;font-size:11px}
+main{padding:26px 30px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.title h1{margin:0;font-size:25px}.title p{margin:7px 0 0;color:#737d8e;font-size:12px}.actions{display:flex;gap:8px}.btn{border:1px solid #292f39;background:#10141b;color:#dbe1ea;border-radius:9px;padding:9px 14px;cursor:pointer}.btn.primary{background:#f2f4f7;color:#090b10;border-color:#f2f4f7;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#0d1118;border:1px solid #202630;border-radius:14px;padding:17px}.stat{min-height:125px}.stat .label{color:#7d8797;font-size:11px}.stat .value{font-size:27px;font-weight:750;margin:12px 0 7px}.trend{font-size:11px;color:#66d49b}.trend.down{color:#ef8f8f}.iconbox{float:left;width:34px;height:34px;border-radius:9px;background:#171c25;display:grid;place-items:center}
+.content{display:grid;grid-template-columns:1.65fr 1fr;gap:14px;margin-top:14px}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.head h2{font-size:14px;margin:0}.head a{font-size:11px;color:#8993a4;text-decoration:none}.chart{height:255px;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.015),transparent)}svg{width:100%;height:100%}.orders{width:100%;border-collapse:collapse;font-size:11px}.orders th{color:#697384;text-align:right;font-weight:500;padding:9px;border-bottom:1px solid #202630}.orders td{padding:12px 9px;border-bottom:1px solid #171c24}.pill{padding:4px 8px;border-radius:20px;background:#15241d;color:#6cdb9d}.pill.pending{background:#292418;color:#e8bf70}.pill.cancel{background:#29191b;color:#e88989}.side-list{display:grid;gap:11px}.item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #181d25}.item:last-child{border:0}.product{display:flex;gap:9px;align-items:center}.thumb{width:35px;height:35px;border-radius:9px;background:#171c25;display:grid;place-items:center}.num{font-size:12px;font-weight:700}.item small{display:block;color:#70798a;margin-top:3px}.bar{height:5px;border-radius:5px;background:#1c212a;margin-top:8px;overflow:hidden}.bar i{display:block;height:100%;background:#dfe4eb;border-radius:5px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.content{grid-template-columns:1fr}.app{grid-template-columns:80px 1fr}.side{padding:18px 10px}.brand b,.brand span,.section,.nav a span,.admin div{display:none}.brand{justify-content:center}.nav a{justify-content:center}.bottom{right:10px;left:10px}.admin{justify-content:center}}
+@media(max-width:650px){.app{display:block}.side{display:none}main{padding:18px 14px}.top{align-items:flex-start;gap:10px}.actions .btn:not(.primary){display:none}.grid{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.stat{min-height:110px}.stat .value{font-size:21px}.orders th:nth-child(2),.orders td:nth-child(2){display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="brand"><div class="logo">V</div><div><b>Vertex Admin</b><span>Management Console</span></div></div>
+<div class="section">مدیریت</div><nav class="nav">
+<a class="active" href="#"><i class="ico">⌂</i><span>داشبورد</span></a><a href="#"><i class="ico">◉</i><span>سفارش‌ها</span></a><a href="#"><i class="ico">▣</i><span>محصولات</span></a><a href="#"><i class="ico">♙</i><span>کاربران</span></a><a href="#"><i class="ico">◈</i><span>کیف پول</span></a><a href="#"><i class="ico">▤</i><span>تراکنش‌ها</span></a>
+</nav><div class="section">سیستم</div><nav class="nav"><a href="#"><i class="ico">◌</i><span>گزارش‌ها</span></a><a href="#"><i class="ico">⚙</i><span>تنظیمات</span></a><a href="#"><i class="ico">◷</i><span>لاگ فعالیت</span></a></nav>
+<div class="bottom"><div class="admin"><div class="avatar">M</div><div><b style="font-size:12px">مدیر سیستم</b><small class="muted">Administrator</small></div></div></div></aside>
+<main><header class="top"><div class="title"><h1>داشبورد مدیریت</h1><p>خلاصه وضعیت فروشگاه و فعالیت‌های اخیر</p></div><div class="actions"><button class="btn">↻ بروزرسانی</button><button class="btn primary">＋ افزودن محصول</button></div></header>
+<section class="grid">
+<div class="card stat"><div class="iconbox">﷼</div><div class="label">فروش امروز</div><div class="value">۱۲۸.۴M</div><div class="trend">↑ ۱۲.۸٪ نسبت به دیروز</div></div>
+<div class="card stat"><div class="iconbox">↗</div><div class="label">سفارش‌های امروز</div><div class="value">۳۴۸</div><div class="trend">↑ ۸.۴٪ این هفته</div></div>
+<div class="card stat"><div class="iconbox">♙</div><div class="label">کاربران فعال</div><div class="value">۸,۴۲۱</div><div class="trend">↑ ۵.۲٪ این ماه</div></div>
+<div class="card stat"><div class="iconbox">◈</div><div class="label">موجودی کیف پول</div><div class="value">۴۶.۷M</div><div class="trend down">↓ ۳.۱٪ امروز</div></div>
+</section>
+<section class="content"><div class="card"><div class="head"><h2>فروش ۳۰ روز اخیر</h2><a href="#">مشاهده گزارش ←</a></div><div class="chart"><svg viewBox="0 0 700 240" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe4eb" stop-opacity=".18"/><stop offset="1" stop-color="#dfe4eb" stop-opacity="0"/></linearGradient></defs><path d="M0 190 C70 175 90 185 135 145 S220 170 270 118 S345 145 390 92 S465 125 520 75 S610 105 700 42 L700 240 L0 240Z" fill="url(#g)"/><path d="M0 190 C70 175 90 185 135 145 S220 170 270 118 S345 145 390 92 S465 125 520 75 S610 105 700 42" fill="none" stroke="#e4e8ee" stroke-width="2"/></svg></div></div>
+<div class="card"><div class="head"><h2>محصولات پرفروش</h2><a href="#">همه ←</a></div><div class="side-list">
+<div class="item"><div class="product"><div class="thumb">◈</div><div><b class="num">اشتراک ویژه</b><small>۴۸۲ فروش</small></div></div><b>۳۲٪</b></div>
+<div class="item"><div class="product"><div class="thumb">▣</div><div><b class="num">پلن حرفه‌ای</b><small>۳۵۷ فروش</small></div></div><b>۲۶٪</b></div>
+<div class="item"><div class="product"><div class="thumb">◇</div><div><b class="num">پلن پایه</b><small>۲۹۱ فروش</small></div></div><b>۲۱٪</b></div>
+</div></div></section>
+<section class="card" style="margin-top:14px"><div class="head"><h2>آخرین سفارش‌ها</h2><a href="#">مشاهده همه ←</a></div><table class="orders"><thead><tr><th>سفارش</th><th>مشتری</th><th>مبلغ</th><th>وضعیت</th><th>زمان</th></tr></thead><tbody>
+<tr><td>#VX-10482</td><td>محمد رضایی</td><td>۲,۴۸۰,۰۰۰ تومان</td><td><span class="pill">تکمیل شده</span></td><td>۲ دقیقه پیش</td></tr>
+<tr><td>#VX-10481</td><td>علی احمدی</td><td>۸۹۰,۰۰۰ تومان</td><td><span class="pill pending">در انتظار</span></td><td>۷ دقیقه پیش</td></tr>
+<tr><td>#VX-10480</td><td>سارا کریمی</td><td>۱,۵۹۰,۰۰۰ تومان</td><td><span class="pill">تکمیل شده</span></td><td>۱۲ دقیقه پیش</td></tr>
+<tr><td>#VX-10479</td><td>رضا محمدی</td><td>۴۲۰,۰۰۰ تومان</td><td><span class="pill cancel">لغو شده</span></td><td>۱۸ دقیقه پیش</td></tr>
+</tbody></table></section>
+</main></div>
+</body></html>
