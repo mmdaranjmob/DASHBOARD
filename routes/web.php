@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
         Route::put('/settings', [AdminController::class, 'settingsUpdate'])->name('settings.update');
+        Route::post('/settings/slider-image', [AdminController::class, 'sliderImageUpload'])->name('settings.slider-image');
         Route::get('/users', [AdminController::class, 'users'])->name('users');
         Route::post('/users/{user}/credit', [AdminController::class, 'manualCredit'])->name('users.credit');
         Route::get('/products', [AdminController::class, 'products'])->name('products');
