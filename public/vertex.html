@@ -89,6 +89,33 @@ function stars(el,n,blur,a,b){let s=[];for(let i=0;i<n;i++)s.push((Math.random()
 stars($('#stA'),150,0,.05,.30);stars($('#stB'),18,1.2,.35,.70);
 function creative(i){const [v,file]=SHOTS[i%10],url=base+file,cap=captions[i%10];let cls='ph phf';let text='';if(v==='pay')text='<div class="cv">METHOD OF CHECKOUTS</div>';else if(v==='launch')text='<div class="t-serif">COLLECTION<br>EXCLUSIVE!</div>';else if(v==='shop')text='<div class="cv">REGIME AT DAWNS</div>';else if(v==='brand')text='<div class="cv">Formulas light, assessed hypoallergenically n designed with a new ritual.</div>';else if(v==='frete')text='<div class="t-big">Ships<br>Gratis</div>';else if(v==='power')text='<div class="t-serif">A POWER<br>FEMININE</div>';else if(v==='off')text='<div class="t-big">50% off</div>';else text='<div class="cv">'+cap+'</div>';return '<img alt="" src="'+url+'"><div class="creative '+v+'">'+text+'</div><div class="edge"></div>'}
 for(let i=0;i<37;i++){const c=document.createElement('div');c.className='card';c.innerHTML=creative(i);const img=c.querySelector('img');img.addEventListener('error',()=>c.classList.add('broken'));ring.appendChild(c)}
+async function loadHeaderConfig(){
+try{
+ const res=await fetch('/site-header-config',{headers:{'Accept':'application/json'},cache:'no-store'});
+ if(!res.ok)return;
+ const data=await res.json();
+ const name=(data.site_name||'VERTEX').trim();
+ const nameEl=document.querySelector('#wmName');
+ if(nameEl)nameEl.textContent=name;
+ const logoUrl=(data.logo_url||'').trim();
+ if(logoUrl){
+   const mark=document.querySelector('.mark');
+   if(mark){mark.outerHTML='<img class="mark" src="'+logoUrl.replace(/"/g,'&quot;')+'" alt="" style="object-fit:contain">';}
+ }
+ const links=document.querySelector('#links');
+ if(links && Array.isArray(data.menu)){
+   links.innerHTML='';
+   data.menu.slice(0,10).forEach(item=>{
+     if(!item || !item.label)return;
+     const a=document.createElement('a');
+     a.textContent=item.label;
+     a.href=item.url||'#';
+     links.appendChild(a);
+   });
+ }
+}catch(e){}
+}
+loadHeaderConfig();
 const cards=[...ring.children],step=360/37,R=891;let phase=-2,last=performance.now();
 function place(){const vw=innerWidth,vh=innerHeight;let Wd=W;if(vw>700&&vw<=1080){Wd=DW_MIN+(vw-TAB_MIN)*(W-DW_MIN)/(TAB_MAX-TAB_MIN);if(vh>vw*1.15)Wd=Math.min(Wd,900)}const k=vw<=700?1:Math.min(vw/Wd,vh/560);document.documentElement.style.setProperty('--k',k);let fill=Math.max(0,vh/k-657),ramp=Math.min(1,(TAB_MAX-vw)/120);if(vw>700&&vw<=1080){let ss=Math.min(fill*.55,420)*ramp;document.documentElement.style.setProperty('--sshift',ss+'px');document.documentElement.style.setProperty('--rs',(1+Math.min(fill/1100,.75)*ramp));document.documentElement.style.setProperty('--stshift',Math.max(0,(219.5-125*(1+Math.min(fill/1100,.75)*ramp)+ss)/2-28)*ramp+'px');fill-=ss}document.documentElement.style.setProperty('--fill',Math.max(0,fill)+'px');
 cards.forEach((el,i)=>{const a=((i*step+phase+540)%360+360)%360-180;if(Math.abs(a)>42){el.style.visibility='hidden';return}el.style.visibility='visible';const r=a*Math.PI/180,c=Math.cos(r);el.style.transform='translate3d('+R*Math.sin(r)+'px,0,'+R*(1-c)+'px) rotateY('+(-a)+'deg)';el.style.filter='brightness('+(0.84+0.5*(1/c-1))+')'})}
