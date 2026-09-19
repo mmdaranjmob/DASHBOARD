@@ -57,7 +57,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function sliderImageUpload(Request $request): RedirectResponse
+    public function sliderImageUpload(Request $request)
     {
         $this->authorizeAdmin();
         $request->validate([
@@ -67,7 +67,7 @@ class AdminController extends Controller
         $path = $request->file('image')->store('banners', 'public');
         $url = url(Storage::disk('public')->url($path));
 
-        return back()->with('uploaded_slider_url', $url);
+        return response()->json(['url' => $url]);
     }
 
     public function settingsUpdate(Request $request): RedirectResponse
