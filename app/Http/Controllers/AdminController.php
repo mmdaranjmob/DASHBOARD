@@ -12,6 +12,7 @@ use App\Models\WalletTransaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -56,6 +57,19 @@ class AdminController extends Controller
         ]);
     }
 
+    public function sliderImageUpload(Request $request): RedirectResponse
+    {
+        $this->authorizeAdmin();
+        $request->validate([
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192'],
+        ]);
+
+        $path = $request->file('image')->store('banners', 'public');
+        $url = url(Storage::disk('public')->url($path));
+
+        return back()->with('uploaded_slider_url', $url);
+    }
+
     public function settingsUpdate(Request $request): RedirectResponse
     {
         $this->authorizeAdmin();
@@ -67,7 +81,7 @@ class AdminController extends Controller
             'support_url' => ['nullable', 'url', 'max:2048'],
             'support_label' => ['required', 'string', 'max:80'],
             'slides' => ['nullable', 'array', 'max:20'],
-            'slides.*.image' => ['nullable', 'url', 'max:2048'],
+            'slides.*.image' => ['nullable', 'string', 'max:2048'],
             'slides.*.link' => ['nullable', 'url', 'max:2048'],
         ]);
 
