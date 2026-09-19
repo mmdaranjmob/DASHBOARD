@@ -10,8 +10,26 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
+use App\Models\StoreSetting;
 
 Route::get('/', fn () => response()->file(public_path('vertex.html')))->name('home');
+
+Route::get('/site-header-config', function () {
+    $menu = json_decode((string) StoreSetting::get('header_menu', ''), true);
+    $default = [
+        ['label' => 'Origin', 'url' => '#origin'],
+        ['label' => 'Learn how', 'url' => '#learn'],
+        ['label' => 'Core Vertex', 'url' => '#core'],
+        ['label' => 'Prices', 'url' => '#prices'],
+        ['label' => 'Support', 'url' => '#support'],
+    ];
+
+    return response()->json([
+        'site_name' => StoreSetting::get('site_name', 'VERTEX'),
+        'logo_url' => StoreSetting::get('logo_url', ''),
+        'menu' => is_array($menu) && $menu ? array_values($menu) : $default,
+    ]);
+})->name('site.header.config');
 Route::get('/products/{product}', [StoreController::class, 'product'])->name('product.show');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
