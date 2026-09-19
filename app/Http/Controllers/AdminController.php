@@ -55,6 +55,7 @@ class AdminController extends Controller
             'supportUrl' => StoreSetting::get('support_url', ''),
             'supportLabel' => StoreSetting::get('support_label', 'پشتیبانی'),
             'headerMenu' => $this->headerMenu(),
+            'floatingImages' => $this->floatingImages(),
         ]);
     }
 
@@ -79,6 +80,20 @@ class AdminController extends Controller
             ->filter(fn ($item) => $item['label'] !== '')
             ->values()
             ->all() ?: $default;
+    }
+
+    private function floatingImages(): array
+    {
+        $images = json_decode((string) StoreSetting::get('floating_images', ''), true);
+        return is_array($images) ? array_values(array_filter($images, fn ($url) => is_string($url) && trim($url) !== '')) : [];
+    }
+
+    public function floatingImageUpload(Request $request)
+    {
+        $this->authorizeAdmin();
+        $request->validate(['image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:8192']]);
+        $path = $request->file('image')->store('floating-cards', 'public');
+        return response()->json(['url' => url(Storage::disk('public')->url($path))]);
     }
 
     public function sliderImageUpload(Request $request)
@@ -136,6 +151,9 @@ class AdminController extends Controller
             ->values()
             ->all();
         StoreSetting::set('header_menu', json_encode($headerMenu, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+        $floatingImages = collect($request->input('floating_images', []))->map(fn ($url) => trim((string) $url))->filter()->unique()->take(20)->values()->all();
+        StoreSetting::set('floating_images', json_encode($floatingImages, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         return back()->with('success', 'تنظیمات فروشگاه ذخیره شد.');
     }
