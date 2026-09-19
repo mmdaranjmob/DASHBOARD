@@ -28,6 +28,7 @@ Route::get('/site-header-config', function () {
         'site_name' => StoreSetting::get('site_name', 'VERTEX'),
         'logo_url' => StoreSetting::get('logo_url', ''),
         'menu' => is_array($menu) && $menu ? array_values($menu) : $default,
+        'floating_images' => json_decode((string) StoreSetting::get('floating_images', '[]'), true) ?: [],
     ]);
 })->name('site.header.config');
 Route::get('/products/{product}', [StoreController::class, 'product'])->name('product.show');
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
         Route::put('/settings', [AdminController::class, 'settingsUpdate'])->name('settings.update');
         Route::post('/settings/slider-image', [AdminController::class, 'sliderImageUpload'])->name('settings.slider-image');
+        Route::post('/settings/floating-image', [AdminController::class, 'floatingImageUpload'])->name('settings.floating-image');
         Route::get('/users', [AdminController::class, 'users'])->name('users');
         Route::post('/users/{user}/credit', [AdminController::class, 'manualCredit'])->name('users.credit');
         Route::get('/products', [AdminController::class, 'products'])->name('products');
