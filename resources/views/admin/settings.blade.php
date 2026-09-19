@@ -31,6 +31,21 @@
             </div>
 
             <div class="slider-manager" style="margin-top:22px">
+                <div class="panel-title"><div><strong>تصاویر متحرک صفحه اصلی</strong><span>این تصاویر همان کارت‌هایی هستند که پایین صفحه اصلی به‌صورت متحرک رد می‌شوند. حداکثر ۲۰ تصویر اضافه کن.</span></div><button type="button" class="btn btn-soft btn-sm" id="add-floating-image">+ افزودن تصویر</button></div>
+                <div id="floating-images-list" style="display:grid;gap:10px;margin-top:12px">
+                    @forelse($floatingImages as $index => $image)
+                    <div data-floating-item style="display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;border:1px solid #e6edf2;border-radius:13px;padding:9px;background:#fbfcfd">
+                        <img src="{{ $image }}" alt="" style="width:90px;height:65px;object-fit:cover;border-radius:9px;border:1px solid #e3eaf0" data-floating-preview>
+                        <div class="form-group" style="margin:0"><label>تصویر {{ $index + 1 }}</label><input name="floating_images[{{ $index }}]" value="{{ $image }}" data-floating-url readonly></div>
+                        <div style="display:flex;gap:6px"><label class="btn btn-soft btn-sm" style="cursor:pointer">تغییر<input type="file" accept="image/*" data-floating-file style="display:none"></label><button type="button" class="btn btn-danger btn-sm" data-remove-floating>حذف</button></div>
+                    </div>
+                    @empty
+                    <div id="floating-empty" style="padding:18px;text-align:center;border:1px dashed #d9e2e8;border-radius:14px;color:#96a3ad;font-size:11px">هنوز تصویری ثبت نشده.</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <div class="slider-manager" style="margin-top:22px">
                 <div class="panel-title"><div><strong>اسلایدر صفحه اصلی</strong><span>هر اسلاید یک تصویر و در صورت نیاز یک لینک دارد. اسلایدها به همان ترتیب نمایش داده می‌شوند.</span></div><button type="button" class="btn btn-soft btn-sm" id="add-slide">+ افزودن اسلاید</button></div>
                 <div id="slides-list" style="display:grid;gap:12px;margin-top:12px">
                     @forelse($bannerSlides as $index => $slide)
@@ -72,6 +87,8 @@
     const add = document.getElementById('add-slide');
     let counter = {{ count($bannerSlides) }};
     let menuCounter = {{ count($headerMenu) }};
+    const floatingList = document.getElementById('floating-images-list');
+    const addFloating = document.getElementById('add-floating-image');
 
     const menuList = document.getElementById('header-menu-list');
     const addMenu = document.getElementById('add-menu-item');
@@ -102,6 +119,40 @@
         renumberMenu();
     });
 
+    async function uploadFloating(file, input, preview, button) {
+        const form = new FormData(); form.append('_token', '{{ csrf_token() }}'); form.append('image', file);
+        const old = button.textContent; button.textContent = 'آپلود...'; button.style.pointerEvents = 'none';
+        try {
+            const r = await fetch('{{ route('admin.settings.floating-image') }}', {method:'POST', body:form});
+            if (!r.ok) throw new Error();
+            const data = await r.json(); input.value=data.url; preview.src=data.url;
+            button.textContent='آپلود شد ✓'; setTimeout(()=>{button.textContent=old;button.style.pointerEvents='';},1000);
+        } catch(e) { alert('آپلود تصویر انجام نشد.'); button.textContent=old; button.style.pointerEvents=''; }
+    }
+    function bindFloating(root=floatingList) {
+        root?.querySelectorAll('[data-floating-file]').forEach(file=>{
+            if(file.dataset.bound)return; file.dataset.bound='1';
+            file.addEventListener('change',()=>{
+                const item=file.closest('[data-floating-item]'); const input=item?.querySelector('[data-floating-url]'); const preview=item?.querySelector('[data-floating-preview]'); const button=file.closest('label');
+                if(file.files[0]&&input&&preview) uploadFloating(file.files[0],input,preview,button);
+            });
+        });
+    }
+    function renumberFloating(){
+        floatingList?.querySelectorAll('[data-floating-item]').forEach((item,i)=>{
+            item.querySelector('[data-floating-url]').name='floating_images['+i+']';
+            const label=item.querySelector('div.form-group label'); if(label) label.textContent='تصویر '+(i+1);
+        });
+    }
+    addFloating?.addEventListener('click',()=>{
+        document.getElementById('floating-empty')?.remove();
+        const i=floatingList.querySelectorAll('[data-floating-item]').length, item=document.createElement('div');
+        item.setAttribute('data-floating-item','');
+        item.style.cssText='display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;border:1px solid #e6edf2;border-radius:13px;padding:9px;background:#fbfcfd';
+        item.innerHTML='<img src="" alt="" style="width:90px;height:65px;object-fit:cover;border-radius:9px;border:1px solid #e3eaf0" data-floating-preview><div class="form-group" style="margin:0"><label>تصویر '+(i+1)+'</label><input name="floating_images['+i+']" data-floating-url readonly placeholder="ابتدا تصویر را انتخاب کن"></div><div style="display:flex;gap:6px"><label class="btn btn-soft btn-sm" style="cursor:pointer">انتخاب<input type="file" accept="image/*" data-floating-file style="display:none"></label><button type="button" class="btn btn-danger btn-sm" data-remove-floating>حذف</button></div>';
+        floatingList.appendChild(item); bindFloating(item); renumberFloating();
+    });
+    floatingList?.addEventListener('click',e=>{if(e.target.closest('[data-remove-floating]')){e.target.closest('[data-floating-item]')?.remove();renumberFloating();}});
     function emptyNotice() {
         if (!list.querySelector('[data-slide]')) {
             if (!document.getElementById('slides-empty')) {
@@ -194,8 +245,7 @@
     emptyNotice();
     });
 
-    renumberMenu();
-    emptyNotice();
+    renumberMenu(); bindFloating(); renumberFloating(); emptyNotice();
 })();
 </script>
 @endsection
