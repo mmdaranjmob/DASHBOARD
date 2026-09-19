@@ -89,6 +89,11 @@ function stars(el,n,blur,a,b){let s=[];for(let i=0;i<n;i++)s.push((Math.random()
 stars($('#stA'),150,0,.05,.30);stars($('#stB'),18,1.2,.35,.70);
 function creative(i){const [v,file]=SHOTS[i%10],url=base+file,cap=captions[i%10];let cls='ph phf';let text='';if(v==='pay')text='<div class="cv">METHOD OF CHECKOUTS</div>';else if(v==='launch')text='<div class="t-serif">COLLECTION<br>EXCLUSIVE!</div>';else if(v==='shop')text='<div class="cv">REGIME AT DAWNS</div>';else if(v==='brand')text='<div class="cv">Formulas light, assessed hypoallergenically n designed with a new ritual.</div>';else if(v==='frete')text='<div class="t-big">Ships<br>Gratis</div>';else if(v==='power')text='<div class="t-serif">A POWER<br>FEMININE</div>';else if(v==='off')text='<div class="t-big">50% off</div>';else text='<div class="cv">'+cap+'</div>';return '<img alt="" src="'+url+'"><div class="creative '+v+'">'+text+'</div><div class="edge"></div>'}
 for(let i=0;i<37;i++){const c=document.createElement('div');c.className='card';c.innerHTML=creative(i);const img=c.querySelector('img');img.addEventListener('error',()=>c.classList.add('broken'));ring.appendChild(c)}
+async function loadFloatingImages(){
+try{const res=await fetch('/site-header-config',{cache:'no-store'});if(!res.ok)return;const data=await res.json();if(!Array.isArray(data.floating_images)||!data.floating_images.length)return;document.querySelectorAll('#ring .card img').forEach((img,i)=>img.src=data.floating_images[i%data.floating_images.length]);}catch(e){}
+}
+loadFloatingImages();
+
 async function loadHeaderConfig(){
 try{
  const res=await fetch('/site-header-config',{headers:{'Accept':'application/json'},cache:'no-store'});
