@@ -43,6 +43,8 @@
 @php($siteName = \App\Models\StoreSetting::get('site_name', 'NumberLand'))
 @php($logoUrl = \App\Models\StoreSetting::get('logo_url', ''))
 @php($supportUrl = \App\Models\StoreSetting::get('support_url', ''))
+@php($headerMenu = json_decode((string) \App\Models\StoreSetting::get('header_menu', ''), true))
+@php($headerMenu = is_array($headerMenu) && $headerMenu ? $headerMenu : [['label'=>'خدمات','url'=>'/'],['label'=>'وبلاگ','url'=>'#'],['label'=>'راهنما','url'=>'#'],['label'=>'نمایندگی فروش','url'=>'#'],['label'=>'تماس','url'=>'#']])
 <body>
 @if(!$isAdminArea)
 <header class="site-header">
@@ -55,11 +57,9 @@
             @endif
         </a>
         <nav class="main-nav" aria-label="ناوبری اصلی">
-            <a class="active" href="{{ route('home') }}">خدمات</a>
-            <a href="#">وبلاگ</a>
-            <a href="#">راهنما</a>
-            <a href="#">نمایندگی فروش</a>
-            <a href="#">تماس</a>
+            @foreach($headerMenu as $menuItem)
+                <a class="{{ request()->url() === url($menuItem['url'] ?? '#') ? 'active' : '' }}" href="{{ $menuItem['url'] ?? '#' }}">{{ $menuItem['label'] ?? '' }}</a>
+            @endforeach
             @auth
                 <a href="{{ route('account.orders') }}">سفارش‌ها</a>
                 <a href="{{ route('account.tickets') }}">پشتیبانی</a>
