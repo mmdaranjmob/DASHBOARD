@@ -12,7 +12,7 @@ use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 use App\Models\StoreSetting;
 
-Route::get('/', fn () => response()->file(public_path('vertex.html')))->name('home');
+Route::get('/', [StoreController::class, 'home'])->name('home');
 
 Route::get('/site-header-config', function () {
     $menu = json_decode((string) StoreSetting::get('header_menu', ''), true);
