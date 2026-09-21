@@ -2,208 +2,249 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/fara-reference.css') }}">
+<style>
+    .fara-ref-home{--base-color:#0c0c15;--bg-color:#fff;--main-color:#606cec;--color-primary:#4458ff;--default-width:1200px;--normal-fonts:Shabnam,Arial,sans-serif;font-family:Shabnam,IRANYekanX,Tahoma,sans-serif}
+    .fara-ref-home .styles__image-wrapper___S_UsW{background:#fafafa}
+    .fara-ref-home .fara-home-slider-placeholder{height:420px;background:#f7f7f8;display:flex;align-items:center;justify-content:center;color:#6b7c93}
+    .fara-ref-home .fara-menu-trigger{background:transparent;border:0;color:#fff;cursor:pointer}
+    .fara-ref-home .fara-product-row-scroll{overflow-x:auto;scrollbar-width:none;display:flex}
+    .fara-ref-home .fara-product-row-scroll::-webkit-scrollbar{display:none}
+    .fara-ref-home .fara-product-item{flex:0 0 25%;padding:0 11.5px}
+    .fara-ref-home .fara-product-item-small{flex:0 0 50%;padding:0 8px}
+    .fara-ref-home .fara-product-item .styles__product___tP7kV{height:100%}
+    @media(max-width:979px){
+        .fara-ref-home .fara-product-item{flex-basis:50%}
+    }
+    @media(max-width:767px){
+        .fara-ref-home .fara-product-item{flex-basis:83.333%}
+    }
+</style>
 
 <div class="fara-ref-home">
-    <div class="fara-ref-notice">تحویل سریع محصولات با ضمانت فعال‌سازی و پشتیبانی</div>
+    <div class="general__wrapper___B8Tdw">
+        <div class="general__main___frr_l general__clear___h0wo9">
 
-    <header class="fara-ref-header">
-        <div class="fara-ref-header-inner">
-            <div class="styles__logo___ZvDUC" style="flex:0 0 auto">
-                <a class="styles__logo-link___qW0ki" href="{{ route('home') }}" aria-label="{{ $siteName }}">
-                    @if($logoUrl)
-                        <img class="styles__logo-image___yxwdN" src="{{ $logoUrl }}" alt="{{ $siteName }}" width="144" height="70">
-                    @else
-                        <span class="fara-ref-brand-fallback">{{ $siteName }}</span>
-                    @endif
-                </a>
+            <div class="styles__message___CQZNJ styles__blue___pWJOI styles__message-normal___xzKpF">
+                <div class="styles__message-inner___hYFur">تحویل سریع محصولات با ضمانت فعال‌سازی و پشتیبانی</div>
             </div>
 
-            <div class="fara-ref-menu">
-                <ul class="styles__row___Dmbry" style="list-style:none;margin:0;padding:0">
-                    <li class="styles__item___H1l0S" style="list-style:none;padding:0 8px">
-                        <a class="styles__link___BZhNG" href="{{ route('home') }}" style="color:#0c0c15">صفحه اصلی</a>
-                    </li>
-                    <li class="styles__item___H1l0S" style="list-style:none;padding:0 8px">
-                        <em class="styles__link___BZhNG" style="font-style:normal;color:#0c0c15;cursor:pointer">محصولات</em>
-                        <div class="fara-ref-custom-menu-panel">
-                            @foreach($categories->take(18) as $category)
-                                <a href="{{ route('products.index',['category'=>$category->slug]) }}">{{ $category->name }}</a>
-                            @endforeach
+            <header class="styles__header-fixed___K9Hck styles__margin-bottom___HDUAb">
+                <div class="styles__inner___TJfnb">
+                    <div class="styles__menu-toggle___XtUSt"><button class="fara-menu-trigger" type="button" aria-label="منو">☰</button></div>
+
+                    <div class="styles__logo___ZvDUC styles__right-side___cMZSF">
+                        <a class="styles__logo-link___qW0ki" href="{{ route('home') }}" aria-label="{{ $siteName }}">
+                            @if($logoUrl)
+                                <img class="styles__logo-image___yxwdN" src="{{ $logoUrl }}" alt="{{ $siteName }}" width="144" height="70">
+                            @else
+                                <span style="color:#fff;font-size:20px;font-weight:700">{{ $siteName }}</span>
+                            @endif
+                        </a>
+                    </div>
+
+                    <div class="styles__menu___dpMpM styles__menu___guaAJ">
+                        <div class="adaptiveMenu__top-level-scroll-wrapper___a53q6">
+                            <ul class="styles__row___Dmbry" style="list-style:none;margin:0;padding:0">
+                                <li class="styles__item___H1l0S" data-menu-active="true">
+                                    <a class="styles__link___BZhNG" href="{{ route('home') }}">صفحه اصلی</a>
+                                </li>
+                                <li class="styles__item___H1l0S">
+                                    <em class="styles__link___BZhNG" style="font-style:normal">محصولات</em>
+                                    <div class="styles__sub-menu___Ao1KX fara-products-menu">
+                                        <div class="styles__column-sub-menu___Qjd9f">
+                                            <ul>
+                                                @foreach($categories->take(8) as $category)
+                                                    <li><a href="{{ route('products.index',['category'=>$category->slug]) }}">{{ $category->name }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                            <ul>
+                                                @foreach($categories->skip(8)->take(8) as $category)
+                                                    <li><a href="{{ route('products.index',['category'=>$category->slug]) }}">{{ $category->name }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="styles__item___H1l0S"><em class="styles__link___BZhNG" style="font-style:normal">درباره ما</em></li>
+                                <li class="styles__item___H1l0S"><em class="styles__link___BZhNG" style="font-style:normal">ارتباط با ما</em></li>
+                            </ul>
                         </div>
-                    </li>
-                    <li class="styles__item___H1l0S" style="list-style:none;padding:0 8px">
-                        <a class="styles__link___BZhNG" href="{{ route('products.index') }}" style="color:#0c0c15">همه محصولات</a>
-                    </li>
-                    <li class="styles__item___H1l0S" style="list-style:none;padding:0 8px">
-                        <a class="styles__link___BZhNG" href="#about" style="color:#0c0c15">درباره ما</a>
-                    </li>
-                    <li class="styles__item___H1l0S" style="list-style:none;padding:0 8px">
-                        <a class="styles__link___BZhNG" href="#contact" style="color:#0c0c15">ارتباط با ما</a>
-                    </li>
-                    <li class="styles__item___H1l0S" style="list-style:none;padding:0 8px">
-                        <a class="styles__link___BZhNG" href="#blog" style="color:#0c0c15">وبلاگ</a>
-                    </li>
-                </ul>
-            </div>
+                    </div>
 
-            <div class="fara-ref-left">
-                <div class="styles__search-wrapper___W0qG5"><a href="{{ route('products.index') }}" aria-label="جستجو" style="color:#0c0c15"><span class="icons__icon-search___TM52S icons__icons___db6nw"></span></a></div>
-                <div class="styles__mini-cart___zlB6M"><div class="styles__inner___uaLo_"><a class="styles__link___BlD5r" href="{{ route('cart.index') }}"><div class="styles__icon___hvMlb icons__icon-orders___OFYyQ icons__icons___db6nw"></div></a></div></div>
-                @auth
-                    <a href="{{ route('account.dashboard') }}" aria-label="حساب کاربری" style="display:inline-flex;align-items:center;gap:6px;color:#0c0c15">حساب</a>
-                @else
-                    <a href="{{ route('auth') }}" aria-label="ورود" style="display:inline-flex;align-items:center;gap:6px;color:#0c0c15">ورود</a>
-                @endauth
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <div class="fara-ref-slides" data-fara-ref-slider>
-            @forelse($bannerSlides as $i=>$slide)
-                <a href="{{ $slide['link'] ?? '#' }}" class="fara-ref-slide-item {{ $i===0?'active':'' }}" data-fara-ref-slide>
-                    <img src="{{ $slide['image'] }}" alt="اسلاید {{ $i+1 }}">
-                </a>
-            @empty
-                <div class="fara-ref-slide-item active">
-                    <div style="height:420px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;color:#7b8794">برای نمایش اسلایدر، از تنظیمات فروشگاه بنر اضافه کنید.</div>
-                </div>
-            @endforelse
-            @if($bannerSlides->count()>1)
-                <button class="fara-ref-slide-arrow right" type="button" data-fara-prev aria-label="اسلاید قبلی">‹</button>
-                <button class="fara-ref-slide-arrow left" type="button" data-fara-next aria-label="اسلاید بعدی">›</button>
-                <div class="fara-ref-slider-dots">
-                    @foreach($bannerSlides as $i=>$slide)
-                        <button class="fara-ref-slider-dot {{ $i===0?'active':'' }}" type="button" data-fara-dot="{{ $i }}" aria-label="اسلاید {{ $i+1 }}"></button>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-
-        @php
-            $featured = $allActiveProducts->take(8);
-            $bestsellers = $allActiveProducts->skip(8)->take(8);
-        @endphp
-
-        <section class="styles__wrapper___huewR">
-            <div class="styles__inner___qADzf styles__theme-blackfriday___pkbNs">
-                <div class="fara-ref-section-caption" style="color:#fff;margin:0 auto 12px">محصولات ویژه فروشگاه</div>
-                <div class="embla-slider__embla___mm7vY styles__carousel___ILO8k">
-                    <div class="embla-slider__embla__viewport___GE_Xf">
-                        <div class="embla-slider__embla__container___L6RUa" style="display:flex;align-items:stretch">
-                            <div class="embla-slider__embla__slide___tJdu0 styles__slideWrapper___dfFke" style="display:flex;flex:0 0 156px;align-items:center;justify-content:center">
-                                <div class="styles__titleSection___wf4sb" style="display:flex">
-                                    <strong style="font-size:18px">پیشنهاد ویژه</strong>
-                                    <span style="font-size:11px;color:#fff">انتخاب‌های منتخب فروشگاه</span>
-                                </div>
+                    <div class="styles__left-side___t78rX">
+                        <div class="styles__search-wrapper___W0qG5">
+                            <a href="{{ route('products.index') }}" aria-label="جستجو" style="color:#fff"><span class="icons__icon-search___TM52S icons__icons___db6nw"></span></a>
+                        </div>
+                        <div class="styles__mini-cart___zlB6M">
+                            <div class="styles__inner___uaLo_">
+                                <a class="styles__link___BlD5r" href="{{ route('cart.index') }}" aria-label="سبد خرید">
+                                    <div class="styles__icon___hvMlb icons__icon-orders___OFYyQ icons__icons___db6nw"></div>
+                                </a>
                             </div>
-                            @foreach($featured as $product)
-                                <div class="embla-slider__embla__slide___tJdu0 styles__slideWrapper___dfFke">
-                                    @include('store.partials.fara-product-card',['product'=>$product])
-                                </div>
-                            @endforeach
+                        </div>
+                        <div class="styles__user-auth___MYSNw">
+                            @auth
+                                <a href="{{ route('account.dashboard') }}" style="color:#fff">حساب کاربری</a>
+                            @else
+                                <a href="{{ route('auth') }}" style="color:#fff">ورود / ثبت‌نام</a>
+                            @endauth
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </header>
 
-        <section class="styles__slideshow-wrapper___xmI6t">
-            <div class="styles__title-wrapper___gNRuL">
-                <h3 class="styles__title___qH9Sq">محصولات پرفروش</h3>
-            </div>
-            <div class="styles__inner___RsF_J grid__container-12___Wvcgh grid__gap___KbmCT">
-                @forelse($bestsellers as $product)
-                    <div class="styles__product___tP7kV grid__span-3___lhPEi grid__span-small-6___jLYuH fara-ref-card">
-                        @include('store.partials.fara-product-card',['product'=>$product])
+            <div class="styles__slideshow-main-wrapper___z0PWo">
+                <div class="slick-slider styles__slideshow___tmTpF styles__fixed___QsBaC">
+                    <div class="slick-list">
+                        <div class="slick-track" data-fara-slides>
+                            @forelse($bannerSlides as $i=>$slide)
+                                <div data-fara-slide class="slick-slide {{ $i===0?'slick-active slick-current':'' }}" style="width:100%;display:{{ $i===0?'block':'none' }}">
+                                    <div>
+                                        <a class="styles__slide-link___fRgQO" href="{{ $slide['link'] ?? '#' }}">
+                                            <img class="styles__slide___T11KV styles__centerCenter___JUO30" src="{{ $slide['image'] }}" alt="slide-image-{{ $i }}" style="display:block;width:100%;height:auto">
+                                        </a>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="slick-slide slick-active" style="width:100%;display:block">
+                                    <div class="fara-home-slider-placeholder">برای نمایش اسلایدر اصلی، از تنظیمات فروشگاه بنر اضافه کنید.</div>
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
-                @empty
-                    <div class="fara-ref-empty">هنوز محصول دیگری ثبت نشده است.</div>
-                @endforelse
-            </div>
-        </section>
-
-        @foreach($categoryProducts as $name=>$items)
-            @php($category = $items->first()?->category)
-            <section class="styles__slideshow-wrapper___xmI6t">
-                <div class="styles__title-wrapper___gNRuL">
-                    <h3 class="styles__title___qH9Sq">
-                        @if($category)<a href="{{ route('products.index',['category'=>$category->slug]) }}">{{ $name }}</a>@else{{ $name }}@endif
-                    </h3>
+                    @if($bannerSlides->count()>1)
+                        <button class="styles__arrow___oG6mu styles__arrow-right___p7MWj" type="button" data-fara-prev aria-label="اسلاید قبلی">‹</button>
+                        <button class="styles__arrow___oG6mu styles__arrow-left___NW9k2" type="button" data-fara-next aria-label="اسلاید بعدی">›</button>
+                    @endif
                 </div>
-                <div class="styles__sliders-content___AxHmi">
-                    <div class="embla-slider__embla___mm7vY styles__carousel___LY9VQ">
+            </div>
+
+            <div class="styles__wrapper___huewR">
+                <div class="styles__inner___qADzf styles__theme-blackfriday___pkbNs">
+                    <div class="styles__titleSection___wf4sb" style="display:flex">
+                        <img class="styles__title___FJLb_" src="{{ asset('images/fara-amazing.svg') }}" alt="پیشنهاد ویژه">
+                        <span style="color:#fff;font-size:12px">پیشنهادهای ویژه</span>
+                    </div>
+                    <div class="embla-slider__embla___mm7vY styles__carousel___ILO8k" style="width:100%">
                         <div class="embla-slider__embla__viewport___GE_Xf">
-                            <div class="embla-slider__embla__container___L6RUa" style="display:flex">
-                                @foreach($items->take(8) as $product)
-                                    <div class="embla-slider__embla__slide___tJdu0 embla-slider__embla__slide-default-2___zqA7U embla-slider__embla__slide-md-3____elpr embla-slider__embla__slide-lg-4___SmZpw">
+                            <div class="embla-slider__embla__container___L6RUa fara-product-row-scroll common__py-2___CGLEL">
+                                @foreach($allActiveProducts->take(8) as $product)
+                                    <div class="styles__slideWrapper___dfFke fara-product-item" style="padding:0 3px">
                                         @include('store.partials.fara-product-card',['product'=>$product])
                                     </div>
                                 @endforeach
                             </div>
                         </div>
-                        <div style="display:flex;justify-content:space-between;pointer-events:none">
+                        <div>
                             <span class="styles__arrow-left___r4SrN styles__arrow-circle___A82Lf">‹</span>
                             <span class="styles__arrow-right___ptDyg styles__arrow-circle___A82Lf">›</span>
                         </div>
                     </div>
                 </div>
-            </section>
-        @endforeach
-
-        <section class="styles__inner___VftlY" id="blog">
-            <div class="styles__title-wrapper___gNRuL"><h3 class="styles__title___qH9Sq">مطالب وبلاگ</h3></div>
-            <div>
-                <article class="styles__post___m5LVB general__clear___h0wo9 styles__col-3___IxFa0 grid__col-3___MVqHF">
-                    <a href="#blog"><div class="styles__image-wrapper___FFLoe"><div style="height:100%;background:linear-gradient(135deg,#eef0ff,#fafafa)"></div></div><div class="styles__post-info___M9gb_"><h2>راهنمای انتخاب و خرید محصولات دیجیتال</h2><div class="styles__post-footer___ww8iU"><span class="styles__date___X59tF">آخرین مطالب فروشگاه</span></div></div></a>
-                </article>
-                <article class="styles__post___m5LVB general__clear___h0wo9 styles__col-3___IxFa0 grid__col-3___MVqHF">
-                    <a href="#blog"><div class="styles__image-wrapper___FFLoe"><div style="height:100%;background:linear-gradient(135deg,#eef0ff,#fafafa)"></div></div><div class="styles__post-info___M9gb_"><h2>چطور اشتراک مناسب را انتخاب کنیم؟</h2><div class="styles__post-footer___ww8iU"><span class="styles__date___X59tF">راهنمای خرید</span></div></div></a>
-                </article>
-                <article class="styles__post___m5LVB general__clear___h0wo9 styles__col-3___IxFa0 grid__col-3___MVqHF">
-                    <a href="#blog"><div class="styles__image-wrapper___FFLoe"><div style="height:100%;background:linear-gradient(135deg,#eef0ff,#fafafa)"></div></div><div class="styles__post-info___M9gb_"><h2>پشتیبانی و پیگیری سفارش‌ها</h2><div class="styles__post-footer___ww8iU"><span class="styles__date___X59tF">پشتیبانی فروشگاه</span></div></div></a>
-                </article>
             </div>
-        </section>
-    </main>
 
-    <footer class="fara-ref-footer" id="contact">
-        <div class="styles__inner___OdCLe">
-            <div class="styles__main___JA8EI">
-                <div class="styles__contact-wrapper___ZzmSO">
-                    <div class="styles__copyright___uYXny">
-                        <span>© {{ now()->year }} - تمامی حقوق این فروشگاه محفوظ است.</span>
+            <div class="styles__container___FKWIf">
+                <div class="styles__title-wrapper___gNRuL">
+                    <h3 class="styles__title___qH9Sq">محصولات پرفروش</h3>
+                </div>
+                <div class="styles__inner___RsF_J">
+                    <div class="grid__container-12___Wvcgh grid__gap___KbmCT grid__gap-mobile-small___Q4RFo">
+                        @foreach($allActiveProducts->skip(8)->take(8) as $product)
+                            <div class="styles__product___tP7kV grid__span-3___lhPEi grid__span-small-6___jLYuH fara-ref-card">
+                                @include('store.partials.fara-product-card',['product'=>$product])
+                            </div>
+                        @endforeach
                     </div>
-                    <div class="styles__socials___CR3lk"><ul><li><a href="#" aria-label="پشتیبانی">پشتیبانی</a></li></ul></div>
                 </div>
             </div>
+
+            @foreach($categoryProducts as $name=>$items)
+                @php($category=$items->first()?->category)
+                <div class="styles__slideshow-wrapper___xmI6t">
+                    <div class="styles__title-wrapper___gNRuL">
+                        <h3 class="styles__title___qH9Sq">
+                            @if($category)<a href="{{ route('products.index',['category'=>$category->slug]) }}">{{ $name }}</a>@else{{ $name }}@endif
+                        </h3>
+                    </div>
+                    <div class="styles__sliders-content___AxHmi">
+                        <div class="embla-slider__embla___mm7vY styles__carousel___LY9VQ" style="width:100%">
+                            <div class="embla-slider__embla__viewport___GE_Xf">
+                                <div class="embla-slider__embla__container___L6RUa fara-product-row-scroll common__py-2___CGLEL">
+                                    @foreach($items->take(8) as $product)
+                                        <div class="embla-slider__embla__slide___tJdu0 embla-slider__embla__slide-default-2___zqA7U embla-slider__embla__slide-md-3____elpr embla-slider__embla__slide-lg-4___SmZpw" style="flex:0 0 25%;padding:0 11.5px">
+                                            @include('store.partials.fara-product-card',['product'=>$product])
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div>
+                                <span class="styles__arrow-left___r4SrN styles__arrow-circle___A82Lf">‹</span>
+                                <span class="styles__arrow-right___ptDyg styles__arrow-circle___A82Lf">›</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+            <div class="styles__inner___VftlY" id="blog">
+                <div class="styles__title-wrapper___gNRuL"><h3 class="styles__title___qH9Sq">مطالب وبلاگ</h3></div>
+                <div>
+                    <div class="styles__post___m5LVB general__clear___h0wo9 styles__col-3___IxFa0 grid__col-3___MVqHF">
+                        <a href="#blog">
+                            <div class="styles__image-wrapper___FFLoe"><div style="height:100%;background:#f4f5f8"></div></div>
+                            <div class="styles__post-info___M9gb_"><h2>راهنمای انتخاب محصولات دیجیتال</h2><div class="styles__post-footer___ww8iU"><span class="styles__date___X59tF">راهنمای خرید</span></div></div>
+                        </a>
+                    </div>
+                    <div class="styles__post___m5LVB general__clear___h0wo9 styles__col-3___IxFa0 grid__col-3___MVqHF">
+                        <a href="#blog">
+                            <div class="styles__image-wrapper___FFLoe"><div style="height:100%;background:#f4f5f8"></div></div>
+                            <div class="styles__post-info___M9gb_"><h2>روش خرید و فعال‌سازی</h2><div class="styles__post-footer___ww8iU"><span class="styles__date___X59tF">راهنمای مشتریان</span></div></div>
+                        </a>
+                    </div>
+                    <div class="styles__post___m5LVB general__clear___M75EP grid__col-3___MVqHF">
+                        <a href="#blog">
+                            <div class="styles__image-wrapper___FFLoe"><div style="height:100%;background:#f4f5f8"></div></div>
+                            <div class="styles__post-info___M9gb_"><h2>پشتیبانی و پیگیری سفارش</h2><div class="styles__post-footer___ww8iU"><span class="styles__date___X59tF">پشتیبانی</span></div></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="styles__footer___wx1OQ styles__simple-footer___z5Zz3">
+                <div class="styles__inner___OdCLe">
+                    <div class="styles__main___JA8EI styles__with-namad___eoUHP">
+                        <div class="styles__contact-wrapper___ZzmSO">
+                            <div class="styles__socials___CR3lk">
+                                <ul><li class="styles__socials-item___XGYVt"><a href="#contact" class="styles__socials-icon___guEze">پشتیبانی</a></li></ul>
+                            </div>
+                            <div class="styles__contact-info___xtaf0">
+                                @if($supportUrl)
+                                    <a class="styles__contact-info-item___JyNfF" href="{{ $supportUrl }}">{{ $supportUrl }}</a>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="styles__copyright___uYXny">
+                            <span>© {{ now()->year }} - تمامی حقوق این فروشگاه محفوظ است.</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
         </div>
-    </footer>
+    </div>
 </div>
 
 <script>
-(() => {
-  const root=document.querySelector('[data-fara-ref-slider]');
-  if(root){
-    const slides=[...root.querySelectorAll('[data-fara-ref-slide]')];
-    const dots=[...root.querySelectorAll('[data-fara-dot]')];
-    let index=0;
-    const show=n=>{
-      if(!slides.length) return;
-      index=(n+slides.length)%slides.length;
-      slides.forEach((s,i)=>s.classList.toggle('active',i===index));
-      dots.forEach((d,i)=>d.classList.toggle('active',i===index));
-    };
-    root.querySelector('[data-fara-prev]')?.addEventListener('click',()=>show(index-1));
-    root.querySelector('[data-fara-next]')?.addEventListener('click',()=>show(index+1));
-    dots.forEach((d,i)=>d.addEventListener('click',()=>show(i)));
-    if(slides.length>1)setInterval(()=>show(index+1),6000);
-  }
-  document.querySelectorAll('.fara-ref-home .styles__wrapper___huewR .embla-slider__embla__container___L6RUa').forEach(row=>{
-    row.style.overflowX='auto';
-    row.style.scrollBehavior='smooth';
-    row.style.scrollbarWidth='none';
-  });
+(()=> {
+    const root=document.querySelector('[data-fara-slides]');
+    if(!root)return;
+    const slides=[...root.querySelectorAll('[data-fara-slide]')];
+    if(slides.length<2)return;
+    let i=0;
+    const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,j)=>s.style.display=j===i?'block':'none');};
+    root.closest('.styles__slideshow')?.querySelector('[data-fara-prev]')?.addEventListener('click',()=>show(i-1));
+    root.closest('.styles__slideshow')?.querySelector('[data-fara-next]')?.addEventListener('click',()=>show(i+1));
+    setInterval(()=>show(i+1),6000);
 })();
 </script>
 @endsection
