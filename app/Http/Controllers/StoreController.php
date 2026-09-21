@@ -45,7 +45,16 @@ class StoreController extends Controller
             });
         }
 
-        $products = $productQuery->limit(30)->get();
+        $products = $productQuery->limit(80)->get();
+        $allActiveProducts = Product::query()
+            ->with('category')
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->latest()
+            ->limit(80)
+            ->get();
+
+        $categoryProducts = $allActiveProducts->groupBy(fn ($product) => $product->category?->name ?: 'سایر محصولات');
         $bannerUrl = StoreSetting::get('banner_url', '');
         $bannerLink = StoreSetting::get('banner_link', '');
         $bannerSlides = json_decode((string) StoreSetting::get('banner_slides', ''), true);
@@ -59,6 +68,8 @@ class StoreController extends Controller
             'tabs' => $tabs,
             'selectedTab' => $selectedTab,
             'products' => $products,
+            'allActiveProducts' => $allActiveProducts,
+            'categoryProducts' => $categoryProducts,
             'siteName' => StoreSetting::get('site_name', 'NumberLand'),
             'logoUrl' => StoreSetting::get('logo_url', ''),
             'bannerUrl' => $bannerUrl,
