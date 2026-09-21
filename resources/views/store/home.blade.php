@@ -191,7 +191,7 @@
                 <div class="styles__inner___RsF_J">
                     <div class="product-grid">
                         @foreach($allActiveProducts->skip(4)->take(8) as $product)
-                            @include('store.partials.fara-product-card',['product'=>$product])
+                            @include('store.partials.fara-product-card',['product'=>$product,'compact'=>true])
                         @endforeach
                     </div>
                 </div>
