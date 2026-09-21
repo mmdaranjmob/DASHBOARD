@@ -46,7 +46,7 @@
 @php($headerMenu = json_decode((string) \App\Models\StoreSetting::get('header_menu', ''), true))
 @php($headerMenu = is_array($headerMenu) && $headerMenu ? $headerMenu : [['label'=>'خدمات','url'=>'/'],['label'=>'وبلاگ','url'=>'#'],['label'=>'راهنما','url'=>'#'],['label'=>'نمایندگی فروش','url'=>'#'],['label'=>'تماس','url'=>'#']])
 <body>
-@if(!$isAdminArea)
+@if(!$isAdminArea && !request()->routeIs('home'))
 <header class="site-header">
     <div class="container header-inner">
         <a class="brand" href="{{ route('home') }}">
@@ -145,7 +145,7 @@
     </main>
 </div>
 @endif
-@if($supportUrl && !$isAdminArea)
+@if($supportUrl && !$isAdminArea && !request()->routeIs('home'))
     <a class="floating-support" href="{{ $supportUrl }}" aria-label="پشتیبانی">
         <svg class="support-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path d="M4 12a8 8 0 0 1 16 0v4a3 3 0 0 1-3 3h-2v-6h5M4 13H2v2a3 3 0 0 0 3 3h1v-5"/>
@@ -153,6 +153,8 @@
         </svg>
     </a>
 @endif
+@if(!$isAdminArea && !request()->routeIs('home'))
 <footer class="footer">© {{ now()->year }} {{ $siteName }}</footer>
+@endif
 </body>
 </html>
