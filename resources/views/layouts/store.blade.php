@@ -129,18 +129,22 @@
     </aside>
     <main class="admin-content">
 @endif
-<main class="page container">
-    @if(session('success'))
-        <div class="flash">{{ session('success') }}</div>
-    @endif
-    @if(session('info'))
-        <div class="flash">{{ session('info') }}</div>
-    @endif
-    @if($errors->any())
-        <div class="errors">{{ $errors->first() }}</div>
-    @endif
+@if(request()->routeIs('home') && !$isAdminArea)
     @yield('content')
-</main>
+@else
+    <main class="page container">
+        @if(session('success'))
+            <div class="flash">{{ session('success') }}</div>
+        @endif
+        @if(session('info'))
+            <div class="flash">{{ session('info') }}</div>
+        @endif
+        @if($errors->any())
+            <div class="errors">{{ $errors->first() }}</div>
+        @endif
+        @yield('content')
+    </main>
+@endif
 @if($isAdminArea)
     </main>
 </div>
